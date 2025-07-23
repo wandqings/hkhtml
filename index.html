@@ -451,9 +451,9 @@
                 }
             },
             mounted: function () {
-                this.appAccessToken = this.getUrlParam('appAccessToken');
-                this.userAccessToken = this.getUrlParam('userAccessToken');
-                this.deviceSerial = this.getUrlParam('deviceSerial');
+                this.appAccessToken = this.getURLParams('appAccessToken');
+                this.userAccessToken = this.getURLParams('userAccessToken');
+                this.deviceSerial = this.getURLParams('deviceSerial');
                 this.initWebSocketClient();
 
                 setTimeout(() => {
