@@ -2,633 +2,636 @@
 <html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>视频监控控制</title>
-  <style>
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>视频监控控制</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
 
-    .hkdomvideocontainer {
-      width: 100%;
-      height: 100%;
-      /* display: flex;
+        .hkdomvideocontainer {
+            width: 100%;
+            height: 100%;
+            /* display: flex;
       position: relative; */
-      background: #000;
-    }
+            background: #000;
+        }
 
-    .hkdomvideo {
-      width: 100%;
-      height: 220px;
-      position: relative;
-    }
+        .hkdomvideo {
+            width: 100%;
+            height: 220px;
+            position: relative;
+        }
 
-    .control-content {
-      /* position: absolute;
+        .control-content {
+            /* position: absolute;
       right: 0;
       top: 0; */
-      width: 100%;
-      height: 200px;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 999;
-      box-sizing: border-box;
-      padding: 10px;
-      color: #fff;
-    }
+            width: 100%;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            box-sizing: border-box;
+            padding: 10px;
+            color: #fff;
+        }
 
-    .control-wrapper {
-      position: relative;
-      width: 190px;
-      height: 190px;
-      max-width: 190px;
-      max-height: 190px;
-      border-radius: 100%;
-      margin: 20px auto;
-    }
+        .control-wrapper {
+            position: relative;
+            width: 190px;
+            height: 190px;
+            max-width: 190px;
+            max-height: 190px;
+            border-radius: 100%;
+            margin: 20px auto;
+        }
 
-    .control-btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      width: 44%;
-      height: 44%;
-      border-radius: 5px;
-      border: 1px solid #78aee4;
-      box-sizing: border-box;
-      transition: all 0.3s linear;
-      background: rgba(0, 0, 0, 0.4);
-    }
+        .control-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            width: 44%;
+            height: 44%;
+            border-radius: 5px;
+            border: 1px solid #78aee4;
+            box-sizing: border-box;
+            transition: all 0.3s linear;
+            background: rgba(0, 0, 0, 0.4);
+        }
 
-    .control-btn i {
-      font-size: 30px;
-      color: #78aee4;
-    }
+        .control-btn i {
+            font-size: 30px;
+            color: #78aee4;
+        }
 
-    .control-inner-btn {
-      position: absolute;
-      width: 60%;
-      height: 60%;
-      background: #fafafa;
-    }
+        .control-inner-btn {
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            background: #fafafa;
+        }
 
-    .control-top {
-      top: -6%;
-      left: 27%;
-      transform: rotate(-45deg);
-    }
+        .control-top {
+            top: -6%;
+            left: 27%;
+            transform: rotate(-45deg);
+        }
 
-    .control-left {
-      top: 27%;
-      left: -6%;
-      transform: rotate(45deg);
-    }
+        .control-left {
+            top: 27%;
+            left: -6%;
+            transform: rotate(45deg);
+        }
 
-    .control-right {
-      top: 27%;
-      right: -6%;
-      transform: rotate(45deg);
-    }
+        .control-right {
+            top: 27%;
+            right: -6%;
+            transform: rotate(45deg);
+        }
 
-    .control-bottom {
-      left: 27%;
-      bottom: -6%;
-      transform: rotate(45deg);
-    }
+        .control-bottom {
+            left: 27%;
+            bottom: -6%;
+            transform: rotate(45deg);
+        }
 
-    .zoom-content {
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
-    }
+        .zoom-content {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
 
-    .zoom-content i {
-      font-size: 30px;
-      color: #78aee4;
-    }
+        .zoom-content i {
+            font-size: 30px;
+            color: #78aee4;
+        }
 
-    .fa-pause-circle {
-      font-size: 40px;
-      color: #fff;
-    }
+        .fa-pause-circle {
+            font-size: 40px;
+            color: #fff;
+        }
 
-    .control-round {
-      position: absolute;
-      top: 25%;
-      left: 25%;
-      width: 50%;
-      height: 50%;
-      background: #fff;
-      border-radius: 100%;
-    }
+        .control-round {
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 50%;
+            height: 50%;
+            background: #fff;
+            border-radius: 100%;
+        }
 
-    .control-round-inner {
-      position: absolute;
-      left: 13%;
-      top: 13%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 70%;
-      height: 70%;
-      font-size: 40px;
-      color: #78aee4;
-      border: 1px solid #78aee4;
-      border-radius: 100%;
-      transition: all 0.3s linear;
-    }
-  </style>
+        .control-round-inner {
+            position: absolute;
+            left: 13%;
+            top: 13%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 70%;
+            height: 70%;
+            font-size: 40px;
+            color: #78aee4;
+            border: 1px solid #78aee4;
+            border-radius: 100%;
+            transition: all 0.3s linear;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="hkdomvideocontainer">
-    <div id="hkdomvideo" class="hkdomvideo"></div>
+    <div class="hkdomvideocontainer">
+        <div id="hkdomvideo" class="hkdomvideo"></div>
 
-    <div class="control-content">
-      <div class="control-wrapper">
-        <div class="control-btn control-top" onmousedown="ptzCamera('0')" onmouseup="stopCamera('0')">
-          <i class="fa fa-arrow-up"></i>
-          <div class="control-inner-btn control-inner"></div>
-        </div>
-        <div class="control-btn control-left" onmousedown="ptzCamera('2')" onmouseup="stopCamera('2')">
-          <i class="fa fa-arrow-left"></i>
-          <div class="control-inner-btn control-inner"></div>
-        </div>
-        <div class="control-btn control-bottom" onmousedown="ptzCamera('1')" onmouseup="stopCamera('1')">
-          <i class="fa fa-arrow-down"></i>
-          <div class="control-inner-btn control-inner"></div>
-        </div>
-        <div class="control-btn control-right" onmousedown="ptzCamera('3')" onmouseup="stopCamera('3')">
-          <i class="fa fa-arrow-right"></i>
-          <div class="control-inner-btn control-inner"></div>
-        </div>
-        <div class="control-round">
-          <div class="control-round-inner">
-            <i class="fa fa-pause-circle"></i>
-          </div>
-        </div>
-      </div>
+        <div class="control-content">
+            <div class="control-wrapper">
+                <div class="control-btn control-top" onmousedown="ptzCamera('0')" onmouseup="stopCamera('0')">
+                    <i class="fa fa-arrow-up"></i>
+                    <div class="control-inner-btn control-inner"></div>
+                </div>
+                <div class="control-btn control-left" onmousedown="ptzCamera('2')" onmouseup="stopCamera('2')">
+                    <i class="fa fa-arrow-left"></i>
+                    <div class="control-inner-btn control-inner"></div>
+                </div>
+                <div class="control-btn control-bottom" onmousedown="ptzCamera('1')" onmouseup="stopCamera('1')">
+                    <i class="fa fa-arrow-down"></i>
+                    <div class="control-inner-btn control-inner"></div>
+                </div>
+                <div class="control-btn control-right" onmousedown="ptzCamera('3')" onmouseup="stopCamera('3')">
+                    <i class="fa fa-arrow-right"></i>
+                    <div class="control-inner-btn control-inner"></div>
+                </div>
+                <div class="control-round">
+                    <div class="control-round-inner">
+                        <i class="fa fa-pause-circle"></i>
+                    </div>
+                </div>
+            </div>
 
-      <div class="zoom-content">
-        <div onmousedown="ptzCamera('8')" onmouseup="stopCamera('8')">
-          <i class="fa fa-search-plus"></i>
+            <div class="zoom-content">
+                <div onmousedown="ptzCamera('8')" onmouseup="stopCamera('8')">
+                    <i class="fa fa-search-plus"></i>
+                </div>
+                <div onmousedown="ptzCamera('9')" onmouseup="stopCamera('9')">
+                    <i class="fa fa-search-minus"></i>
+                </div>
+            </div>
         </div>
-        <div onmousedown="ptzCamera('9')" onmouseup="stopCamera('9')">
-          <i class="fa fa-search-minus"></i>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <!-- 引入 SDK -->
-  <script src="./HikOpenVideoSDK-1.0.0.min.js"></script>
-  <!-- 引入 Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <!-- 引入 SDK -->
+    <script src="/HikOpenVideoSDK-1.0.0.min.js"></script>
+    <!-- 引入 Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-  <script>
-    let wsClient = null;
+    <script>
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    wsClient: null,
+                    appAccessToken: '',
+                    userAccessToken: '',
+                    deviceSerial: '',
+                    resourcesData: {
+                        "msg": "处理成功",
+                        "code": 0,
+                        "data": {
+                            "deviceZoneId": 5004256,
+                            "thirdDescription": "4G球机",
+                            "hasDeviceAuth": false,
+                            "idString": "54672401",
+                            "source": 1,
+                            "secDescription": "球机",
+                            "firstCategoryName": "firstFrontDevice",
+                            "resName": "视频点",
+                            "isInactiveDevice": false,
+                            "logicNo": 1,
+                            "model": "DS-2DE4423DW-D/GLT/XM",
+                            "id": 54672401,
+                            "ext": "{\"goodsModel\": \"DS-2DE4423DW-D/GLT/XM\", \"videoLevel\": 2}",
+                            "resType": "Channel",
+                            "isCollect": false,
+                            "channelNum": 1,
+                            "lastestOfflineTime": "2025-07-23 14:44:50",
+                            "isSelect": false,
+                            "deviceVersion": "V5.8.2 build 241217",
+                            "thirdCategoryName": "third4GDomeCamera",
+                            "resIdentifier": 1,
+                            "isLongLife": false,
+                            "lowPower": 0,
+                            "gwDeviceSerial": "GA5538155",
+                            "deviceSerial": "GA5538155",
+                            "gwDeviceId": 54671964,
+                            "firstDescription": "前端设备",
+                            "videoLevel": 2,
+                            "secCategoryName": "secDomeCamera",
+                            "is4GDevice": 1,
+                            "name": "DS-2DE4423DW-D/GLT/XM(GA5538155)",
+                            "isShare": false,
+                            "isMultiDoor": false,
+                            "detailPage": "IPC",
+                            "multiList": [],
+                            "categoryId": 9010200,
+                            "isEncrypt": 0,
+                            "status": 1
+                        }
+                    },
+                    tokensData: {
+                        "msg": "操作成功！",
+                        "code": 0,
+                        "data": [
+                            {
+                                "streamTalkToken": "tk.AgMxLjABMQAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
+                                "streamTalk0Token": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
+                                "deviceSerial": "GA5538155",
+                                "streamTokenPlayExpire": 1753271687,
+                                "deviceVideoToken": "tk.BARERTAxCUdBNTUzODE1NQExBXZpZGVvASoAAAP0gGiAyNcAAAAAAAAAACxmdW9BUDBOZmRnWk9OWkFYa21hdi8rODcvYVBGQjVUWlF1OTlmR1h4SmZJPR4QMGiAjU-NQiOed6-UqHQXHQMvKiokAAA_",
+                                "channelNo": 1,
+                                "deviceGlobalToken": "tk.BARERTAxCUdBNTUzODE1NQExBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsQ1BTVjdSdGp1NGhzWTV3cWkyRXlBUFczK2I3d1RTVzA4NTg0S05Oc1BURT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA",
+                                "streamLiveToken": "tk.AgMxLjABMQAAAASwAAAEsGiAyNcAAAAAAAAAAAAAACxuS0EycnlyNnlWZ0ExWFczNkN0MG9KaGlxV1dia0JxRFBnT3JOd0dsS2ZBPTBogI1PzUIjnnev1Kh0Fx0A",
+                                "tokenExpire": 1753529687,
+                                "streamTokenExpire": 1753271687,
+                                "streamRecToken": "tk.AgMxLjABMQAAA-SAAAP0gGiAyNcAAQAAAAAAAAAAACx4bkU5WGloNDJvRzBiV1lLcVBkaGFKbjc5NDRaYkJoOFFSTU1HK2xwZTZVPTBogI1PzUIjnnev1Kh0Fx0A",
+                                "deviceToken": "tk.BARERTAxCUdBNTUzODE1NQEqBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsRmRzQXpHbjFrOE9yanJvUGt4Nm05d2lEck1kT2pDNWVudlFwaDZRbEQ3VT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA"
+                            },
+                            {
+                                "streamTalkToken": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
+                                "streamTalk0Token": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
+                                "deviceSerial": "GA5538155",
+                                "streamTokenPlayExpire": 1753271687,
+                                "deviceVideoToken": "tk.BARERTAxCUdBNTUzODE1NQEwBXZpZGVvASoAAAP0gGiAyNcAAAAAAAAAACxkMjdtdy9SNHFENHUzbVAva2xtVkdpNzJzU1J0L0JXd3h2NG5YQ0NxS0RvPR4QMGiAjU-NQiOed6-UqHQXHQMvKiokAAA_",
+                                "channelNo": 0,
+                                "deviceGlobalToken": "tk.BARERTAxCUdBNTUzODE1NQEwBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAselg3cVlzVmdrdURkbjY5SUd1Z2lqSE56aTZsRWxrZ3oxTjZBUVlJS0xNRT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA",
+                                "streamLiveToken": "tk.AgMxLjABMAAAAASwAAAEsGiAyNcAAAAAAAAAAAAAACxuS0EycnlyNnlWZ0ExWFczNkN0MG9KaGlxV1dia0JxRFBnT3JOd0dsS2ZBPTBogI1PzUIjnnev1Kh0Fx0A",
+                                "tokenExpire": 1753529687,
+                                "streamTokenExpire": 1753271687,
+                                "streamRecToken": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAQAAAAAAAAAAACx4bkU5WGloNDJvRzBiV1lLcVBkaGFKbjc5NDRaYkJoOFFSTU1HK2xwZTZVPTBogI1PzUIjnnev1Kh0Fx0A",
+                                "deviceToken": "tk.BARERTAxCUdBNTUzODE1NQEqBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsRmRzQXpHbjFrOE9yanJvUGt4Nm05d2lEck1kT2pDNWVudlFwaDZRbEQ3VT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA"
+                            }
+                        ]
+                    }
+                    ,
+                    capacitysData: {
+                        "msg": "处理成功",
+                        "code": 0,
+                        "data": {
+                            "maxPatrolNum": 8,
+                            "supportDeviceVersion": 1,
+                            "supportQuickplayMaxtime": 8,
+                            "supportNvrOverlayDT": 1,
+                            "supportSupplementLight": 1,
+                            "maxPatrolSequenceNum": 32,
+                            "maxPatternNum": 4,
+                            "supportMotionDetect": 1,
+                            "supportMdDtcTarget": 1,
+                            "supportRecordPage": 1,
+                            "supportVideoQuality": 1,
+                            "supportFieldDetectArea": 1,
+                            "supportOneKeyCruise": 1,
+                            "supportOverlayName": 1,
+                            "source": "direct",
+                            "supportFieldDetect": 1,
+                            "supportIntranet": 1,
+                            "supportPtzPreset": 1,
+                            "supportMdBeep": 0,
+                            "matchSeriesId": 16,
+                            "channelShortcut": "ipcChannelShortcut",
+                            "supportWirelessDial": 1,
+                            "supportEncrypt": 1,
+                            "logUploadType": [],
+                            "supportIsapi": 1,
+                            "supportWhiteLightBrightness": 1,
+                            "supportWdr": 1,
+                            "supportUpgradePackageTask": 1,
+                            "minPatrolSequenceDelay": 15,
+                            "supportPtzLeftRight": 1,
+                            "supportRegionEntrance": 1,
+                            "supportGL": 1,
+                            "supportPosition3D": 1,
+                            "seriesName": "4G球机,*DS-2DC*/GLT*,*DS-2DE*/GL*",
+                            "temp59A": 1,
+                            "supportLightSwitch": 1,
+                            "supportRecord": 1,
+                            "cloudStorage": {
+                                "stateDesc": "",
+                                "name": "云存储",
+                                "state": -2,
+                                "entrance": ""
+                            },
+                            "supportAlarmMessageDetection": 1,
+                            "supportLowPower": 0,
+                            "supportHuman": 1,
+                            "linkProPhysicalVersion": "V3.0.0",
+                            "supportDownload": 1,
+                            "supportDSTP": 1,
+                            "onceCruiseId": 45,
+                            "supportCapture": 1,
+                            "supportIntranetV2": 1,
+                            "supportLocalStorage": 1,
+                            "matchModelId": 39,
+                            "linkPhysicalVersion": "V3.2.4",
+                            "4gDevice": 1,
+                            "channelSettingPanel": "ipcChannelSetting",
+                            "supportSubscribeEvent": 1,
+                            "matchModel": ".*DS-2DE.*GL.*",
+                            "supportPhysicalAdd": 1,
+                            "supportPtzDirection": 1,
+                            "supportAlarmPic": 1,
+                            "supportLink": 1,
+                            "specialId": [
+                                33,
+                                34,
+                                35,
+                                36,
+                                37,
+                                38,
+                                39,
+                                40,
+                                41,
+                                42,
+                                43,
+                                44,
+                                45,
+                                46,
+                                50,
+                                94,
+                                96,
+                                97,
+                                98,
+                                99,
+                                100,
+                                101,
+                                102,
+                                103,
+                                104,
+                                105
+                            ],
+                            "supportPtz": 1,
+                            "supportLED": 1,
+                            "supportUpgrade": 1,
+                            "supportVideoBack": 1,
+                            "support4GDevice": 1,
+                            "smartMessage": {
+                                "route": "SMUniAppPage://pages/statistics/channelDetail?appId=__UNI__EFB25DA",
+                                "stateDesc": "未开通",
+                                "name": "智能提醒",
+                                "state": -1,
+                                "entrance": "免费试用"
+                            },
+                            "mdSensitivityStep": 20,
+                            "supportPlayQuickOpt": "1,2,4,8",
+                            "featureModelIds": [],
+                            "supportDefenceplan": 1,
+                            "maxPatrolSequenceDelay": 3600,
+                            "supportStreamCodeV2": 1,
+                            "supportMotionDetectArea": 1,
+                            "supportVideoPicRatio": 1,
+                            "supportPlaySlowOpt": "0.125,0.25,0.5",
+                            "supportRecordPlan": 1,
+                            "supportOverlayDT": 1,
+                            "supportIrLightBrightness": 1,
+                            "supportLineDetection": 1,
+                            "supportSupplementLightClose": 1,
+                            "supportVideoQualityOpt": [
+                                {
+                                    "streamType": 0,
+                                    "videoLevel": 1,
+                                    "videoLevelDesc": "标清"
+                                },
+                                {
+                                    "streamType": 0,
+                                    "videoLevel": 2,
+                                    "videoLevelDesc": "高清"
+                                },
+                                {
+                                    "streamType": 0,
+                                    "videoLevel": 3,
+                                    "videoLevelDesc": "超清"
+                                }
+                            ],
+                            "supportPtzCtrl": 1,
+                            "supportCar": 1,
+                            "supportNvrOverlayName": 1,
+                            "supportPtzZoom": 1,
+                            "supportHdd": 1,
+                            "defaultPatrolSequenceDelay": 15,
+                            "supportDefence": 1,
+                            "supportReplaySpeed": 1,
+                            "deviceSettingPanel": "ipcDeviceSetting",
+                            "supportRegionExiting": 1,
+                            "supportVideoBackDetection": 1,
+                            "supportFlip": 1,
+                            "supportSmartMessage": 1,
+                            "supportPtzTopBottom": 1,
+                            "supportPhysicalModel": 1,
+                            "supportSmartHumanCar": 1
+                        }
+                    },
+                    ezAccessData: {
+                        "msg": "操作成功！",
+                        "code": 0,
+                        "data": {
+                            "tokenAppKey": "3068808d4fcd42239e77afd4a874171d",
+                            "tokenExpire": 1753529568,
+                            "httpUrlToken": "tk.AwRTSTAyAAADLyoqAAP0gGiAyGAsS0xvazhaNXRDd2RVcjZnTGNnZjN6VC9SYTlyeXNxQVE0K1BSZWcyQW5tcz0eEDBogI1PzUIjnnev1Kh0Fx0kAAAAAAAAAAAA"
+                        }
+                    },
+
+                }
+            },
+            mounted: function () {
+                this.appAccessToken = this.getUrlParam('appAccessToken');
+                this.userAccessToken = this.getUrlParam('userAccessToken');
+                this.deviceSerial = this.getUrlParam('deviceSerial');
+                this.initWebSocketClient();
+
+                setTimeout(() => {
+                    this.initResource()
+                }, 100)
+            },
+            created() {
+
+            },
+            beforeDestroy() {
+                if (this.wsClient) {
+                    this.wsClient.hideWnd({}, (res) => {
+                        console.log(res, '窗口隐藏回调');
+                    });
+                    this.wsClient.disconnect();
+                    this.wsClient = null;
+                }
+            },
+            beforeUnmount() {
+
+            },
+            methods: {
+                // 获取 URL 参数
+                getURLParams() {
+                    const search = window.location.search || window.location.hash.split('?')[1] || '';
+                    return new URLSearchParams(search);
+                },
+                initWebSocketClient() {
+                    if (window.WebSocketClient) {
+                        this.wsClient = new window.WebSocketClient();
+                        try {
+                            const response = this.wsClient.connect();
+                            if (response.code === 0) {
+                                console.log('WebSocket连接成功');
+
+                                const appkeydata = {
+                                    bSecret: false,
+                                    openAppkey: '1947464820169441335',
+                                    openAppSecret: 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAOak5iLuyMzfNLDliTFtsIi4iorcX0oc6rPfaaf0EFuO7schjsUepL5YJz4saJU3kXOrn2rQoFtgD/9+2kvuisne2gUs/CFndfDAieMBlBdHzR62zi6lKAerWdFKAOWlYLwulY6O/MyqxzrQOFnZAJ1vWXfvQkM4w9FsPiaANEzdAgMBAAECgYAZtkRZnJkSDcgH+G7E7d+CPmBjfpG452RazQswSAsSyepglKMf4nynI5isW7ME/37dkEJjXAKkbR8bcn7PfDZIeKme0i2C4F9wV4ghtmhFS93Hn63do/KH3DH2h8TIjTWyb+vXCo8WCoLv+F8NdSe9CZLFHuLMT4XY3IaOSFOogQJBAP/UDslU20YyG4dk5WP0mvPAYOek16OLLuz8UMVlcS0gBpnL7AR+JFMIsQwSNKBFtsuub4jLxSuvqk8mwMwrHi0CQQDmzIP06pVS3sDdvo+ka9j37YD/0IDHuJrWjH/3fczXD7x2XQxYzdOGl9ZjH5Bdnrjmz5cGG0b1GyWy8QkY88dxAkB4JuR68nu50DbVtDF4bJ2J9cSNhwIwMWJss2RMEYTCKNRwzzGeOpBc3ywn+zT0QUnFB7wih3GnPu3CFvVd7rJRAkBq6RW/H+MnzhOdJCa5zVNmFViKJ3VgDr164P5uEJIQlTOByLxtbnqrgC5JIFfpZhrUoBifNYd7BqZB67GBI3uhAkEAoyOxi4kqcyTAzmsY7K/2ZpYs8MqAeLhm0YcraiGipReVJZIAYlFSL3TSw3kMx6c+vP1Qi4jrVA+UnU63u1IBCg=='
+                                };
+                                this.wsClient.setSecretConfigInfo(appkeydata, (response) => {
+                                    console.log('initWndParam回调');
+                                });
 
 
-    // 获取 URL 参数
-    function getURLParams() {
-      const search = window.location.search || window.location.hash.split('?')[1] || '';
-      return new URLSearchParams(search);
-    }
+                                // 获取视频容器大小
+                                const rect = document.getElementById('hkdomvideo').getBoundingClientRect();
 
-    const params = getURLParams();
+                                // 初始化窗口参数
+                                const data = {
+                                    ezAccessData: JSON.stringify(this.ezAccessData),
+                                    appAccessToken: this.appAccessToken,
+                                    userAccessToken: userAccessToken,
+                                    ezvizAddr: 'https://open.ys7.com',
+                                    authAddr: 'https://auth.ys7.com',
+                                    openAddr: 'https://open.ys7.com'
+                                };
 
-    let appAccessToken = params.get('appAccessToken') || 'default_app_token';
-    let userAccessToken = params.get('userAccessToken') || 'default_user_token';
-    let deviceSerial = params.get('deviceSerial') || 'GA5538148';
+                                this.wsClient.initWndParam(data, (response) => {
+                                    console.log(response, '初始化回调');
+                                    this.wsClient.showWnd({}, (response) => {
+                                        console.log(response, '窗口显示回调');
+                                    });
 
-    // // 模拟获取 token
-    // function getAppTokenData() {
-    //   return new Promise(resolve => {
-    //     // 模拟异步获取 token
-    //     setTimeout(() => {
-    //       resolve({ appAccessToken: 'your_app_token' });
-    //     }, 300);
-    //   });
-    // }
+                                    this.wsClient.setParentWnd({ webTitle: this.wsClient.guid(16) }, (res) => {
+                                        console.log(res, '设置父窗口回调');
+                                        this.wsClient.setWndGeometry({
+                                            rect: {
+                                                top: rect.top,
+                                                left: rect.left,
+                                                width: rect.width,
+                                                height: rect.height
+                                            }
+                                        }, (res) => {
+                                            console.log(res, '设置窗口位置回调');
+                                        });
+                                    });
+                                });
 
-    // function getuserTokenData() {
-    //   return new Promise(resolve => {
-    //     setTimeout(() => {
-    //       resolve({ userAccessToken: 'your_user_token' });
-    //     }, 300);
-    //   });
-    // }
+                                // 监听 resize
+                                window.addEventListener("resize", () => {
+                                    const rect = document.getElementById('hkdomvideo').getBoundingClientRect();
+                                    this.wsClient.setWndGeometry({
+                                        rect: {
+                                            top: rect.top,
+                                            left: rect.left,
+                                            width: rect.width,
+                                            height: rect.height
+                                        }
+                                    }, (response) => {
+                                        console.log(response, '设置窗口位置回调');
+                                    });
+                                });
+                            }
+                        } catch (err) {
+                            console.error('WebSocket连接失败:', err);
+                        }
+                    } else {
+                        console.error('WebSocketClient未定义，请检查SDK加载');
+                    }
+                },
+                initResource(deviceSerial) {
+                    const initResourcedata = {
+                        resourcesData: JSON.stringify(this.resourcesData),
+                        tokensData: JSON.stringify(this.tokensData),
+                        capacitysData: JSON.stringify(this.capacitysData)
+                    };
 
-    async function initWebSocketClient() {
-      if (window.WebSocketClient) {
-        wsClient = new window.WebSocketClient();
-        try {
-          const response = await wsClient.connect();
-          if (response.code === 0) {
-            console.log('WebSocket连接成功');
+                    // 模拟调用接口
+                    setTimeout(() => {
+                        this.wsClient.initResource(initResourcedata, (res) => {
+                            console.log(res, '初始化资源回调');
 
-            const appkeydata = {
-              bSecret: false,
-              openAppkey: '1947464820169441335',
-              openAppSecret: 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAOak5iLuyMzfNLDliTFtsIi4iorcX0oc6rPfaaf0EFuO7schjsUepL5YJz4saJU3kXOrn2rQoFtgD/9+2kvuisne2gUs/CFndfDAieMBlBdHzR62zi6lKAerWdFKAOWlYLwulY6O/MyqxzrQOFnZAJ1vWXfvQkM4w9FsPiaANEzdAgMBAAECgYAZtkRZnJkSDcgH+G7E7d+CPmBjfpG452RazQswSAsSyepglKMf4nynI5isW7ME/37dkEJjXAKkbR8bcn7PfDZIeKme0i2C4F9wV4ghtmhFS93Hn63do/KH3DH2h8TIjTWyb+vXCo8WCoLv+F8NdSe9CZLFHuLMT4XY3IaOSFOogQJBAP/UDslU20YyG4dk5WP0mvPAYOek16OLLuz8UMVlcS0gBpnL7AR+JFMIsQwSNKBFtsuub4jLxSuvqk8mwMwrHi0CQQDmzIP06pVS3sDdvo+ka9j37YD/0IDHuJrWjH/3fczXD7x2XQxYzdOGl9ZjH5Bdnrjmz5cGG0b1GyWy8QkY88dxAkB4JuR68nu50DbVtDF4bJ2J9cSNhwIwMWJss2RMEYTCKNRwzzGeOpBc3ywn+zT0QUnFB7wih3GnPu3CFvVd7rJRAkBq6RW/H+MnzhOdJCa5zVNmFViKJ3VgDr164P5uEJIQlTOByLxtbnqrgC5JIFfpZhrUoBifNYd7BqZB67GBI3uhAkEAoyOxi4kqcyTAzmsY7K/2ZpYs8MqAeLhm0YcraiGipReVJZIAYlFSL3TSw3kMx6c+vP1Qi4jrVA+UnU63u1IBCg=='
-            };
-            wsClient.setSecretConfigInfo(appkeydata, (response) => {
-              console.log('initWndParam回调');
-            });
+                            setTimeout(() => {
+                                this.wsClient.startPreview(1, {
+                                    deviceSerial: deviceSerial,
+                                    channelNo: 1
+                                }, (res) => {
+                                    console.log(res, '开启实时预览回调');
+                                });
+                            }, 1000);
+                        });
+                    }, 500);
+                },
+                ptzCamera(direction) {
+                    const data = {
+                        cmdType: 'start',
+                        direction: Number(direction),
+                        channelNo: 1,
+                        deviceSerial: deviceSerial
+                    };
+                    setTimeout(() => {
+                        this.wsClient.ptzControl(1, data, (res) => {
+                            console.log(res, '控制');
+                        });
+                    }, 500);
+                },
+                stopCamera(direction) {
+                    const data = {
+                        cmdType: 'stop',
+                        direction: Number(direction),
+                        channelNo: 1,
+                        deviceSerial: deviceSerial
+                    };
+                    setTimeout(() => {
+                        this.wsClient.ptzControl(1, data, (res) => {
+                            console.log(res, '控制');
+                        });
+                    }, 500);
+                }
 
-            // 获取 token
-            const appTokenRes = await getAppTokenData();
-            appAccessToken = appTokenRes.appAccessToken;
-            const userTokenRes = await getuserTokenData();
-            userAccessToken = userTokenRes.userAccessToken;
-
-            // 获取视频容器大小
-            const rect = document.getElementById('hkdomvideo').getBoundingClientRect();
-            let ead = {
-              "msg": "操作成功！",
-              "code": 0,
-              "data": {
-                "tokenAppKey": "3068808d4fcd42239e77afd4a874171d",
-                "tokenExpire": 1753529568,
-                "httpUrlToken": "tk.AwRTSTAyAAADLyoqAAP0gGiAyGAsS0xvazhaNXRDd2RVcjZnTGNnZjN6VC9SYTlyeXNxQVE0K1BSZWcyQW5tcz0eEDBogI1PzUIjnnev1Kh0Fx0kAAAAAAAAAAAA"
-              }
             }
 
-            // 初始化窗口参数
-            const data = {
-              ezAccessData: JSON.stringify(ead),
-              appAccessToken: appAccessToken,
-              userAccessToken: userAccessToken,
-              ezvizAddr: 'https://open.ys7.com',
-              authAddr: 'https://auth.ys7.com',
-              openAddr: 'https://open.ys7.com'
-            };
+        })
 
-            wsClient.initWndParam(data, (response) => {
-              console.log(response, '初始化回调');
-              wsClient.showWnd({}, (response) => {
-                console.log(response, '窗口显示回调');
-              });
 
-              wsClient.setParentWnd({ webTitle: wsClient.guid(16) }, (res) => {
-                console.log(res, '设置父窗口回调');
-                wsClient.setWndGeometry({
-                  rect: {
-                    top: rect.top,
-                    left: rect.left,
-                    width: rect.width,
-                    height: rect.height
-                  }
-                }, (res) => {
-                  console.log(res, '设置窗口位置回调');
-                });
-              });
-            });
 
-            // 监听 resize
-            window.addEventListener("resize", () => {
-              const rect = document.getElementById('hkdomvideo').getBoundingClientRect();
-              wsClient.setWndGeometry({
-                rect: {
-                  top: rect.top,
-                  left: rect.left,
-                  width: rect.width,
-                  height: rect.height
-                }
-              }, (response) => {
-                console.log(response, '设置窗口位置回调');
-              });
-            });
-          }
-        } catch (err) {
-          console.error('WebSocket连接失败:', err);
-        }
-      } else {
-        console.error('WebSocketClient未定义，请检查SDK加载');
-      }
-    }
-    let resd = {
-      "msg": "处理成功",
-      "code": 0,
-      "data": {
-        "deviceZoneId": 5004256,
-        "thirdDescription": "4G球机",
-        "hasDeviceAuth": false,
-        "idString": "54672401",
-        "source": 1,
-        "secDescription": "球机",
-        "firstCategoryName": "firstFrontDevice",
-        "resName": "视频点",
-        "isInactiveDevice": false,
-        "logicNo": 1,
-        "model": "DS-2DE4423DW-D/GLT/XM",
-        "id": 54672401,
-        "ext": "{\"goodsModel\": \"DS-2DE4423DW-D/GLT/XM\", \"videoLevel\": 2}",
-        "resType": "Channel",
-        "isCollect": false,
-        "channelNum": 1,
-        "lastestOfflineTime": "2025-07-23 14:44:50",
-        "isSelect": false,
-        "deviceVersion": "V5.8.2 build 241217",
-        "thirdCategoryName": "third4GDomeCamera",
-        "resIdentifier": 1,
-        "isLongLife": false,
-        "lowPower": 0,
-        "gwDeviceSerial": "GA5538155",
-        "deviceSerial": "GA5538155",
-        "gwDeviceId": 54671964,
-        "firstDescription": "前端设备",
-        "videoLevel": 2,
-        "secCategoryName": "secDomeCamera",
-        "is4GDevice": 1,
-        "name": "DS-2DE4423DW-D/GLT/XM(GA5538155)",
-        "isShare": false,
-        "isMultiDoor": false,
-        "detailPage": "IPC",
-        "multiList": [],
-        "categoryId": 9010200,
-        "isEncrypt": 0,
-        "status": 1
-      }
-    }
-    let tokd = {
-      "msg": "操作成功！",
-      "code": 0,
-      "data": [
-        {
-          "streamTalkToken": "tk.AgMxLjABMQAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
-          "streamTalk0Token": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
-          "deviceSerial": "GA5538155",
-          "streamTokenPlayExpire": 1753271687,
-          "deviceVideoToken": "tk.BARERTAxCUdBNTUzODE1NQExBXZpZGVvASoAAAP0gGiAyNcAAAAAAAAAACxmdW9BUDBOZmRnWk9OWkFYa21hdi8rODcvYVBGQjVUWlF1OTlmR1h4SmZJPR4QMGiAjU-NQiOed6-UqHQXHQMvKiokAAA_",
-          "channelNo": 1,
-          "deviceGlobalToken": "tk.BARERTAxCUdBNTUzODE1NQExBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsQ1BTVjdSdGp1NGhzWTV3cWkyRXlBUFczK2I3d1RTVzA4NTg0S05Oc1BURT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA",
-          "streamLiveToken": "tk.AgMxLjABMQAAAASwAAAEsGiAyNcAAAAAAAAAAAAAACxuS0EycnlyNnlWZ0ExWFczNkN0MG9KaGlxV1dia0JxRFBnT3JOd0dsS2ZBPTBogI1PzUIjnnev1Kh0Fx0A",
-          "tokenExpire": 1753529687,
-          "streamTokenExpire": 1753271687,
-          "streamRecToken": "tk.AgMxLjABMQAAA-SAAAP0gGiAyNcAAQAAAAAAAAAAACx4bkU5WGloNDJvRzBiV1lLcVBkaGFKbjc5NDRaYkJoOFFSTU1HK2xwZTZVPTBogI1PzUIjnnev1Kh0Fx0A",
-          "deviceToken": "tk.BARERTAxCUdBNTUzODE1NQEqBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsRmRzQXpHbjFrOE9yanJvUGt4Nm05d2lEck1kT2pDNWVudlFwaDZRbEQ3VT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA"
-        },
-        {
-          "streamTalkToken": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
-          "streamTalk0Token": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
-          "deviceSerial": "GA5538155",
-          "streamTokenPlayExpire": 1753271687,
-          "deviceVideoToken": "tk.BARERTAxCUdBNTUzODE1NQEwBXZpZGVvASoAAAP0gGiAyNcAAAAAAAAAACxkMjdtdy9SNHFENHUzbVAva2xtVkdpNzJzU1J0L0JXd3h2NG5YQ0NxS0RvPR4QMGiAjU-NQiOed6-UqHQXHQMvKiokAAA_",
-          "channelNo": 0,
-          "deviceGlobalToken": "tk.BARERTAxCUdBNTUzODE1NQEwBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAselg3cVlzVmdrdURkbjY5SUd1Z2lqSE56aTZsRWxrZ3oxTjZBUVlJS0xNRT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA",
-          "streamLiveToken": "tk.AgMxLjABMAAAAASwAAAEsGiAyNcAAAAAAAAAAAAAACxuS0EycnlyNnlWZ0ExWFczNkN0MG9KaGlxV1dia0JxRFBnT3JOd0dsS2ZBPTBogI1PzUIjnnev1Kh0Fx0A",
-          "tokenExpire": 1753529687,
-          "streamTokenExpire": 1753271687,
-          "streamRecToken": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAQAAAAAAAAAAACx4bkU5WGloNDJvRzBiV1lLcVBkaGFKbjc5NDRaYkJoOFFSTU1HK2xwZTZVPTBogI1PzUIjnnev1Kh0Fx0A",
-          "deviceToken": "tk.BARERTAxCUdBNTUzODE1NQEqBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsRmRzQXpHbjFrOE9yanJvUGt4Nm05d2lEck1kT2pDNWVudlFwaDZRbEQ3VT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA"
-        }
-      ]
-    }
 
-    let capd = {
-      "msg": "处理成功",
-      "code": 0,
-      "data": {
-        "maxPatrolNum": 8,
-        "supportDeviceVersion": 1,
-        "supportQuickplayMaxtime": 8,
-        "supportNvrOverlayDT": 1,
-        "supportSupplementLight": 1,
-        "maxPatrolSequenceNum": 32,
-        "maxPatternNum": 4,
-        "supportMotionDetect": 1,
-        "supportMdDtcTarget": 1,
-        "supportRecordPage": 1,
-        "supportVideoQuality": 1,
-        "supportFieldDetectArea": 1,
-        "supportOneKeyCruise": 1,
-        "supportOverlayName": 1,
-        "source": "direct",
-        "supportFieldDetect": 1,
-        "supportIntranet": 1,
-        "supportPtzPreset": 1,
-        "supportMdBeep": 0,
-        "matchSeriesId": 16,
-        "channelShortcut": "ipcChannelShortcut",
-        "supportWirelessDial": 1,
-        "supportEncrypt": 1,
-        "logUploadType": [],
-        "supportIsapi": 1,
-        "supportWhiteLightBrightness": 1,
-        "supportWdr": 1,
-        "supportUpgradePackageTask": 1,
-        "minPatrolSequenceDelay": 15,
-        "supportPtzLeftRight": 1,
-        "supportRegionEntrance": 1,
-        "supportGL": 1,
-        "supportPosition3D": 1,
-        "seriesName": "4G球机,*DS-2DC*/GLT*,*DS-2DE*/GL*",
-        "temp59A": 1,
-        "supportLightSwitch": 1,
-        "supportRecord": 1,
-        "cloudStorage": {
-          "stateDesc": "",
-          "name": "云存储",
-          "state": -2,
-          "entrance": ""
-        },
-        "supportAlarmMessageDetection": 1,
-        "supportLowPower": 0,
-        "supportHuman": 1,
-        "linkProPhysicalVersion": "V3.0.0",
-        "supportDownload": 1,
-        "supportDSTP": 1,
-        "onceCruiseId": 45,
-        "supportCapture": 1,
-        "supportIntranetV2": 1,
-        "supportLocalStorage": 1,
-        "matchModelId": 39,
-        "linkPhysicalVersion": "V3.2.4",
-        "4gDevice": 1,
-        "channelSettingPanel": "ipcChannelSetting",
-        "supportSubscribeEvent": 1,
-        "matchModel": ".*DS-2DE.*GL.*",
-        "supportPhysicalAdd": 1,
-        "supportPtzDirection": 1,
-        "supportAlarmPic": 1,
-        "supportLink": 1,
-        "specialId": [
-          33,
-          34,
-          35,
-          36,
-          37,
-          38,
-          39,
-          40,
-          41,
-          42,
-          43,
-          44,
-          45,
-          46,
-          50,
-          94,
-          96,
-          97,
-          98,
-          99,
-          100,
-          101,
-          102,
-          103,
-          104,
-          105
-        ],
-        "supportPtz": 1,
-        "supportLED": 1,
-        "supportUpgrade": 1,
-        "supportVideoBack": 1,
-        "support4GDevice": 1,
-        "smartMessage": {
-          "route": "SMUniAppPage://pages/statistics/channelDetail?appId=__UNI__EFB25DA",
-          "stateDesc": "未开通",
-          "name": "智能提醒",
-          "state": -1,
-          "entrance": "免费试用"
-        },
-        "mdSensitivityStep": 20,
-        "supportPlayQuickOpt": "1,2,4,8",
-        "featureModelIds": [],
-        "supportDefenceplan": 1,
-        "maxPatrolSequenceDelay": 3600,
-        "supportStreamCodeV2": 1,
-        "supportMotionDetectArea": 1,
-        "supportVideoPicRatio": 1,
-        "supportPlaySlowOpt": "0.125,0.25,0.5",
-        "supportRecordPlan": 1,
-        "supportOverlayDT": 1,
-        "supportIrLightBrightness": 1,
-        "supportLineDetection": 1,
-        "supportSupplementLightClose": 1,
-        "supportVideoQualityOpt": [
-          {
-            "streamType": 0,
-            "videoLevel": 1,
-            "videoLevelDesc": "标清"
-          },
-          {
-            "streamType": 0,
-            "videoLevel": 2,
-            "videoLevelDesc": "高清"
-          },
-          {
-            "streamType": 0,
-            "videoLevel": 3,
-            "videoLevelDesc": "超清"
-          }
-        ],
-        "supportPtzCtrl": 1,
-        "supportCar": 1,
-        "supportNvrOverlayName": 1,
-        "supportPtzZoom": 1,
-        "supportHdd": 1,
-        "defaultPatrolSequenceDelay": 15,
-        "supportDefence": 1,
-        "supportReplaySpeed": 1,
-        "deviceSettingPanel": "ipcDeviceSetting",
-        "supportRegionExiting": 1,
-        "supportVideoBackDetection": 1,
-        "supportFlip": 1,
-        "supportSmartMessage": 1,
-        "supportPtzTopBottom": 1,
-        "supportPhysicalModel": 1,
-        "supportSmartHumanCar": 1
-      }
-    }
+        // function 
 
-    function initResource(deviceSerial) {
-      const initResourcedata = {
-        resourcesData: JSON.stringify(resd),
-        tokensData: JSON.stringify(tokd),
-        capacitysData: JSON.stringify(capd)
-      };
+        // function
 
-      // 模拟调用接口
-      setTimeout(() => {
-        // initResourcedata.resourcesData = JSON.stringify({
-        //   deviceSerial: deviceSerial,
-        //   channelNo: 1
-        // });
-        // initResourcedata.tokensData = JSON.stringify({
-        //   deviceSerial: deviceSerial,
-        //   token: 'mocked_token'
-        // });
-        // initResourcedata.capacitysData = JSON.stringify(['ptz', 'audio']);
+        //     // 页面加载
+        //     window.onload = async () => {
+        //         await initWebSocketClient();
+        //         initResource(deviceSerial);
+        //     };
 
-        wsClient.initResource(initResourcedata, (res) => {
-          console.log(res, '初始化资源回调');
-
-          setTimeout(() => {
-            wsClient.startPreview(1, {
-              deviceSerial: deviceSerial,
-              channelNo: 1
-            }, (res) => {
-              console.log(res, '开启实时预览回调');
-            });
-          }, 1000);
-        });
-      }, 500);
-    }
-
-    function ptzCamera(direction) {
-      const data = {
-        cmdType: 'start',
-        direction: Number(direction),
-        channelNo: 1,
-        deviceSerial: deviceSerial
-      };
-      setTimeout(() => {
-        wsClient.ptzControl(1, data, (res) => {
-          console.log(res, '控制');
-        });
-      }, 500);
-    }
-
-    function stopCamera(direction) {
-      const data = {
-        cmdType: 'stop',
-        direction: Number(direction),
-        channelNo: 1,
-        deviceSerial: deviceSerial
-      };
-      setTimeout(() => {
-        wsClient.ptzControl(1, data, (res) => {
-          console.log(res, '控制');
-        });
-      }, 500);
-    }
-
-    // 页面加载
-    window.onload = async () => {
-      await initWebSocketClient();
-      initResource(deviceSerial);
-    };
-
-    // 页面卸载
-    window.onunload = () => {
-      if (wsClient) {
-        wsClient.hideWnd({}, (res) => {
-          console.log(res, '窗口隐藏回调');
-        });
-        wsClient.disconnect();
-        wsClient = null;
-      }
-    };
-  </script>
+        // // 页面卸载
+        // window.onunload = () => {
+        //     if (this.wsClient) {
+        //         this.wsClient.hideWnd({}, (res) => {
+        //             console.log(res, '窗口隐藏回调');
+        //         });
+        //         this.wsClient.disconnect();
+        //         this.wsClient = null;
+        //     }
+        // };
+    </script>
 </body>
 
 </html>
