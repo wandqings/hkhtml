@@ -456,9 +456,7 @@
                 this.deviceSerial = this.getURLParams('deviceSerial');
                 this.initWebSocketClient();
 
-                setTimeout(() => {
-                    this.initResource()
-                }, 1000)
+
             },
             created() {
 
@@ -547,6 +545,10 @@
                                         console.log(response, '设置窗口位置回调');
                                     });
                                 });
+
+                                setTimeout(() => {
+                                    this.initResource()
+                                }, 3000)
                             }
                         } catch (err) {
                             console.error('WebSocket连接失败:', err);
