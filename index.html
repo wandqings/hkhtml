@@ -569,7 +569,7 @@
 
                             setTimeout(() => {
                                 this.wsClient.startPreview(1, {
-                                    deviceSerial: deviceSerial,
+                                    deviceSerial: this.deviceSerial != '' ? this.deviceSerial : "GA5538155",
                                     channelNo: 1
                                 }, (res) => {
                                     console.log(res, '开启实时预览回调');
@@ -583,7 +583,7 @@
                         cmdType: 'start',
                         direction: Number(direction),
                         channelNo: 1,
-                        deviceSerial: deviceSerial
+                        deviceSerial: this.deviceSerial
                     };
                     setTimeout(() => {
                         this.wsClient.ptzControl(1, data, (res) => {
@@ -596,7 +596,7 @@
                         cmdType: 'stop',
                         direction: Number(direction),
                         channelNo: 1,
-                        deviceSerial: deviceSerial
+                        deviceSerial: this.deviceSerial
                     };
                     setTimeout(() => {
                         this.wsClient.ptzControl(1, data, (res) => {
