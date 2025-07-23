@@ -188,8 +188,8 @@
     </div>
 
     <!-- 引入 SDK -->
-    <script src="./HikOpenVideoSDK-1.0.0.min.js"></script>
-     <script src="./vue.min.js"></script>
+    <script src="/HikOpenVideoSDK-1.0.0.min.js"></script>
+    <script src="./vue.min.js"></script>
     <!-- 引入 Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
@@ -458,7 +458,7 @@
 
                 setTimeout(() => {
                     this.initResource()
-                }, 100)
+                }, 1000)
             },
             created() {
 
@@ -555,7 +555,7 @@
                         console.error('WebSocketClient未定义，请检查SDK加载');
                     }
                 },
-                initResource(deviceSerial) {
+                initResource() {
                     const initResourcedata = {
                         resourcesData: JSON.stringify(this.resourcesData),
                         tokensData: JSON.stringify(this.tokensData),
@@ -566,10 +566,9 @@
                     setTimeout(() => {
                         this.wsClient.initResource(initResourcedata, (res) => {
                             console.log(res, '初始化资源回调');
-
                             setTimeout(() => {
                                 this.wsClient.startPreview(1, {
-                                    deviceSerial: this.deviceSerial != '' ? this.deviceSerial : "GA5538155",
+                                    deviceSerial: this.deviceSerial != '' ? this.deviceSerial : 'GA5538155',
                                     channelNo: 1
                                 }, (res) => {
                                     console.log(res, '开启实时预览回调');
