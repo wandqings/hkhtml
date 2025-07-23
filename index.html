@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>视频监控控制</title>
   <style>
-    body, html {
+    body,
+    html {
       margin: 0;
       padding: 0;
       height: 100%;
@@ -144,6 +146,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="hkdomvideocontainer">
     <div id="hkdomvideo" class="hkdomvideo"></div>
@@ -191,19 +194,19 @@
 
   <script>
     let wsClient = null;
-   
+
 
     // 获取 URL 参数
-function getURLParams() {
-  const search = window.location.search || window.location.hash.split('?')[1] || '';
-  return new URLSearchParams(search);
-}
+    function getURLParams() {
+      const search = window.location.search || window.location.hash.split('?')[1] || '';
+      return new URLSearchParams(search);
+    }
 
-const params = getURLParams();
+    const params = getURLParams();
 
-let appAccessToken = params.get('appAccessToken') || 'default_app_token';
-let userAccessToken = params.get('userAccessToken') || 'default_user_token';
-let deviceSerial = params.get('deviceSerial') || 'GA5538148';
+    let appAccessToken = params.get('appAccessToken') || 'default_app_token';
+    let userAccessToken = params.get('userAccessToken') || 'default_user_token';
+    let deviceSerial = params.get('deviceSerial') || 'GA5538148';
 
     // // 模拟获取 token
     // function getAppTokenData() {
@@ -248,10 +251,19 @@ let deviceSerial = params.get('deviceSerial') || 'GA5538148';
 
             // 获取视频容器大小
             const rect = document.getElementById('hkdomvideo').getBoundingClientRect();
+            let ead = {
+              "msg": "操作成功！",
+              "code": 0,
+              "data": {
+                "tokenAppKey": "3068808d4fcd42239e77afd4a874171d",
+                "tokenExpire": 1753529568,
+                "httpUrlToken": "tk.AwRTSTAyAAADLyoqAAP0gGiAyGAsS0xvazhaNXRDd2RVcjZnTGNnZjN6VC9SYTlyeXNxQVE0K1BSZWcyQW5tcz0eEDBogI1PzUIjnnev1Kh0Fx0kAAAAAAAAAAAA"
+              }
+            }
 
             // 初始化窗口参数
             const data = {
-              ezAccessData: '{}',
+              ezAccessData: JSON.stringify(ead),
               appAccessToken: appAccessToken,
               userAccessToken: userAccessToken,
               ezvizAddr: 'https://open.ys7.com',
@@ -302,25 +314,260 @@ let deviceSerial = params.get('deviceSerial') || 'GA5538148';
         console.error('WebSocketClient未定义，请检查SDK加载');
       }
     }
+    let resd = {
+      "msg": "处理成功",
+      "code": 0,
+      "data": {
+        "deviceZoneId": 5004256,
+        "thirdDescription": "4G球机",
+        "hasDeviceAuth": false,
+        "idString": "54672401",
+        "source": 1,
+        "secDescription": "球机",
+        "firstCategoryName": "firstFrontDevice",
+        "resName": "视频点",
+        "isInactiveDevice": false,
+        "logicNo": 1,
+        "model": "DS-2DE4423DW-D/GLT/XM",
+        "id": 54672401,
+        "ext": "{\"goodsModel\": \"DS-2DE4423DW-D/GLT/XM\", \"videoLevel\": 2}",
+        "resType": "Channel",
+        "isCollect": false,
+        "channelNum": 1,
+        "lastestOfflineTime": "2025-07-23 14:44:50",
+        "isSelect": false,
+        "deviceVersion": "V5.8.2 build 241217",
+        "thirdCategoryName": "third4GDomeCamera",
+        "resIdentifier": 1,
+        "isLongLife": false,
+        "lowPower": 0,
+        "gwDeviceSerial": "GA5538155",
+        "deviceSerial": "GA5538155",
+        "gwDeviceId": 54671964,
+        "firstDescription": "前端设备",
+        "videoLevel": 2,
+        "secCategoryName": "secDomeCamera",
+        "is4GDevice": 1,
+        "name": "DS-2DE4423DW-D/GLT/XM(GA5538155)",
+        "isShare": false,
+        "isMultiDoor": false,
+        "detailPage": "IPC",
+        "multiList": [],
+        "categoryId": 9010200,
+        "isEncrypt": 0,
+        "status": 1
+      }
+    }
+    let tokd = {
+      "msg": "操作成功！",
+      "code": 0,
+      "data": [
+        {
+          "streamTalkToken": "tk.AgMxLjABMQAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
+          "streamTalk0Token": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
+          "deviceSerial": "GA5538155",
+          "streamTokenPlayExpire": 1753271687,
+          "deviceVideoToken": "tk.BARERTAxCUdBNTUzODE1NQExBXZpZGVvASoAAAP0gGiAyNcAAAAAAAAAACxmdW9BUDBOZmRnWk9OWkFYa21hdi8rODcvYVBGQjVUWlF1OTlmR1h4SmZJPR4QMGiAjU-NQiOed6-UqHQXHQMvKiokAAA_",
+          "channelNo": 1,
+          "deviceGlobalToken": "tk.BARERTAxCUdBNTUzODE1NQExBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsQ1BTVjdSdGp1NGhzWTV3cWkyRXlBUFczK2I3d1RTVzA4NTg0S05Oc1BURT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA",
+          "streamLiveToken": "tk.AgMxLjABMQAAAASwAAAEsGiAyNcAAAAAAAAAAAAAACxuS0EycnlyNnlWZ0ExWFczNkN0MG9KaGlxV1dia0JxRFBnT3JOd0dsS2ZBPTBogI1PzUIjnnev1Kh0Fx0A",
+          "tokenExpire": 1753529687,
+          "streamTokenExpire": 1753271687,
+          "streamRecToken": "tk.AgMxLjABMQAAA-SAAAP0gGiAyNcAAQAAAAAAAAAAACx4bkU5WGloNDJvRzBiV1lLcVBkaGFKbjc5NDRaYkJoOFFSTU1HK2xwZTZVPTBogI1PzUIjnnev1Kh0Fx0A",
+          "deviceToken": "tk.BARERTAxCUdBNTUzODE1NQEqBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsRmRzQXpHbjFrOE9yanJvUGt4Nm05d2lEck1kT2pDNWVudlFwaDZRbEQ3VT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA"
+        },
+        {
+          "streamTalkToken": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
+          "streamTalk0Token": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
+          "deviceSerial": "GA5538155",
+          "streamTokenPlayExpire": 1753271687,
+          "deviceVideoToken": "tk.BARERTAxCUdBNTUzODE1NQEwBXZpZGVvASoAAAP0gGiAyNcAAAAAAAAAACxkMjdtdy9SNHFENHUzbVAva2xtVkdpNzJzU1J0L0JXd3h2NG5YQ0NxS0RvPR4QMGiAjU-NQiOed6-UqHQXHQMvKiokAAA_",
+          "channelNo": 0,
+          "deviceGlobalToken": "tk.BARERTAxCUdBNTUzODE1NQEwBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAselg3cVlzVmdrdURkbjY5SUd1Z2lqSE56aTZsRWxrZ3oxTjZBUVlJS0xNRT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA",
+          "streamLiveToken": "tk.AgMxLjABMAAAAASwAAAEsGiAyNcAAAAAAAAAAAAAACxuS0EycnlyNnlWZ0ExWFczNkN0MG9KaGlxV1dia0JxRFBnT3JOd0dsS2ZBPTBogI1PzUIjnnev1Kh0Fx0A",
+          "tokenExpire": 1753529687,
+          "streamTokenExpire": 1753271687,
+          "streamRecToken": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAQAAAAAAAAAAACx4bkU5WGloNDJvRzBiV1lLcVBkaGFKbjc5NDRaYkJoOFFSTU1HK2xwZTZVPTBogI1PzUIjnnev1Kh0Fx0A",
+          "deviceToken": "tk.BARERTAxCUdBNTUzODE1NQEqBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsRmRzQXpHbjFrOE9yanJvUGt4Nm05d2lEck1kT2pDNWVudlFwaDZRbEQ3VT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA"
+        }
+      ]
+    }
+
+    let capd = {
+      "msg": "处理成功",
+      "code": 0,
+      "data": {
+        "maxPatrolNum": 8,
+        "supportDeviceVersion": 1,
+        "supportQuickplayMaxtime": 8,
+        "supportNvrOverlayDT": 1,
+        "supportSupplementLight": 1,
+        "maxPatrolSequenceNum": 32,
+        "maxPatternNum": 4,
+        "supportMotionDetect": 1,
+        "supportMdDtcTarget": 1,
+        "supportRecordPage": 1,
+        "supportVideoQuality": 1,
+        "supportFieldDetectArea": 1,
+        "supportOneKeyCruise": 1,
+        "supportOverlayName": 1,
+        "source": "direct",
+        "supportFieldDetect": 1,
+        "supportIntranet": 1,
+        "supportPtzPreset": 1,
+        "supportMdBeep": 0,
+        "matchSeriesId": 16,
+        "channelShortcut": "ipcChannelShortcut",
+        "supportWirelessDial": 1,
+        "supportEncrypt": 1,
+        "logUploadType": [],
+        "supportIsapi": 1,
+        "supportWhiteLightBrightness": 1,
+        "supportWdr": 1,
+        "supportUpgradePackageTask": 1,
+        "minPatrolSequenceDelay": 15,
+        "supportPtzLeftRight": 1,
+        "supportRegionEntrance": 1,
+        "supportGL": 1,
+        "supportPosition3D": 1,
+        "seriesName": "4G球机,*DS-2DC*/GLT*,*DS-2DE*/GL*",
+        "temp59A": 1,
+        "supportLightSwitch": 1,
+        "supportRecord": 1,
+        "cloudStorage": {
+          "stateDesc": "",
+          "name": "云存储",
+          "state": -2,
+          "entrance": ""
+        },
+        "supportAlarmMessageDetection": 1,
+        "supportLowPower": 0,
+        "supportHuman": 1,
+        "linkProPhysicalVersion": "V3.0.0",
+        "supportDownload": 1,
+        "supportDSTP": 1,
+        "onceCruiseId": 45,
+        "supportCapture": 1,
+        "supportIntranetV2": 1,
+        "supportLocalStorage": 1,
+        "matchModelId": 39,
+        "linkPhysicalVersion": "V3.2.4",
+        "4gDevice": 1,
+        "channelSettingPanel": "ipcChannelSetting",
+        "supportSubscribeEvent": 1,
+        "matchModel": ".*DS-2DE.*GL.*",
+        "supportPhysicalAdd": 1,
+        "supportPtzDirection": 1,
+        "supportAlarmPic": 1,
+        "supportLink": 1,
+        "specialId": [
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          50,
+          94,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105
+        ],
+        "supportPtz": 1,
+        "supportLED": 1,
+        "supportUpgrade": 1,
+        "supportVideoBack": 1,
+        "support4GDevice": 1,
+        "smartMessage": {
+          "route": "SMUniAppPage://pages/statistics/channelDetail?appId=__UNI__EFB25DA",
+          "stateDesc": "未开通",
+          "name": "智能提醒",
+          "state": -1,
+          "entrance": "免费试用"
+        },
+        "mdSensitivityStep": 20,
+        "supportPlayQuickOpt": "1,2,4,8",
+        "featureModelIds": [],
+        "supportDefenceplan": 1,
+        "maxPatrolSequenceDelay": 3600,
+        "supportStreamCodeV2": 1,
+        "supportMotionDetectArea": 1,
+        "supportVideoPicRatio": 1,
+        "supportPlaySlowOpt": "0.125,0.25,0.5",
+        "supportRecordPlan": 1,
+        "supportOverlayDT": 1,
+        "supportIrLightBrightness": 1,
+        "supportLineDetection": 1,
+        "supportSupplementLightClose": 1,
+        "supportVideoQualityOpt": [
+          {
+            "streamType": 0,
+            "videoLevel": 1,
+            "videoLevelDesc": "标清"
+          },
+          {
+            "streamType": 0,
+            "videoLevel": 2,
+            "videoLevelDesc": "高清"
+          },
+          {
+            "streamType": 0,
+            "videoLevel": 3,
+            "videoLevelDesc": "超清"
+          }
+        ],
+        "supportPtzCtrl": 1,
+        "supportCar": 1,
+        "supportNvrOverlayName": 1,
+        "supportPtzZoom": 1,
+        "supportHdd": 1,
+        "defaultPatrolSequenceDelay": 15,
+        "supportDefence": 1,
+        "supportReplaySpeed": 1,
+        "deviceSettingPanel": "ipcDeviceSetting",
+        "supportRegionExiting": 1,
+        "supportVideoBackDetection": 1,
+        "supportFlip": 1,
+        "supportSmartMessage": 1,
+        "supportPtzTopBottom": 1,
+        "supportPhysicalModel": 1,
+        "supportSmartHumanCar": 1
+      }
+    }
 
     function initResource(deviceSerial) {
       const initResourcedata = {
-        resourcesData: '',
-        tokensData: '',
-        capacitysData: ''
+        resourcesData: JSON.stringify(resd),
+        tokensData: JSON.stringify(tokd),
+        capacitysData: JSON.stringify(capd)
       };
 
       // 模拟调用接口
       setTimeout(() => {
-        initResourcedata.resourcesData = JSON.stringify({
-          deviceSerial: deviceSerial,
-          channelNo: 1
-        });
-        initResourcedata.tokensData = JSON.stringify({
-          deviceSerial: deviceSerial,
-          token: 'mocked_token'
-        });
-        initResourcedata.capacitysData = JSON.stringify(['ptz', 'audio']);
+        // initResourcedata.resourcesData = JSON.stringify({
+        //   deviceSerial: deviceSerial,
+        //   channelNo: 1
+        // });
+        // initResourcedata.tokensData = JSON.stringify({
+        //   deviceSerial: deviceSerial,
+        //   token: 'mocked_token'
+        // });
+        // initResourcedata.capacitysData = JSON.stringify(['ptz', 'audio']);
 
         wsClient.initResource(initResourcedata, (res) => {
           console.log(res, '初始化资源回调');
@@ -383,4 +630,5 @@ let deviceSerial = params.get('deviceSerial') || 'GA5538148';
     };
   </script>
 </body>
+
 </html>
