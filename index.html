@@ -325,7 +325,7 @@
                         console.log('this.wsClient', this.wsClient)
                         this.wsClient.connect().then((response) => {
                             console.log('连接成功', response);
-                            if (response.code == 0) {
+                            // if (response.code == 0) {
                                 // 初始化插件参数前调用，可多次调用
                                 const appkeydata = {
                                     bSecret: false,
@@ -380,7 +380,7 @@
 
                                     });
                                 });
-                            }
+                            // }
                         })
                         // try {
 
