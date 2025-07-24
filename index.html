@@ -153,19 +153,23 @@
 
         <div class="control-content">
             <div class="control-wrapper">
-                <div class="control-btn control-top" onmousedown="ptzCamera('0')" onmouseup="stopCamera('0')">
+                <div class="control-btn control-top" @onmousedown="ptzCamera('0')" @onmouseup="stopCamera('0')"
+                    @click="cloudControlAuto('0')">
                     <i class="fa fa-arrow-up"></i>
                     <div class="control-inner-btn control-inner"></div>
                 </div>
-                <div class="control-btn control-left" onmousedown="ptzCamera('2')" onmouseup="stopCamera('2')">
+                <div class="control-btn control-left" @onmousedown="ptzCamera('2')" @onmouseup="stopCamera('2')"
+                    @click="cloudControlAuto('2')">
                     <i class="fa fa-arrow-left"></i>
                     <div class="control-inner-btn control-inner"></div>
                 </div>
-                <div class="control-btn control-bottom" onmousedown="ptzCamera('1')" onmouseup="stopCamera('1')">
+                <div class="control-btn control-bottom" @onmousedown="ptzCamera('1')" @onmouseup="stopCamera('1')"
+                    @click="cloudControlAuto('1')">
                     <i class="fa fa-arrow-down"></i>
                     <div class="control-inner-btn control-inner"></div>
                 </div>
-                <div class="control-btn control-right" onmousedown="ptzCamera('3')" onmouseup="stopCamera('3')">
+                <div class="control-btn control-right" @onmousedown="ptzCamera('3')" @onmouseup="stopCamera('3')"
+                    @click="cloudControlAuto('3')">
                     <i class="fa fa-arrow-right"></i>
                     <div class="control-inner-btn control-inner"></div>
                 </div>
@@ -177,10 +181,10 @@
             </div>
 
             <div class="zoom-content">
-                <div onmousedown="ptzCamera('8')" onmouseup="stopCamera('8')">
+                <div @onmousedown="ptzCamera('8')" @onmouseup="stopCamera('8')" @click="cloudControlAuto('8')">
                     <i class="fa fa-search-plus"></i>
                 </div>
-                <div onmousedown="ptzCamera('9')" onmouseup="stopCamera('9')">
+                <div @onmousedown="ptzCamera('9')" @onmouseup="stopCamera('9')" @click="cloudControlAuto('9')">
                     <i class="fa fa-search-minus"></i>
                 </div>
             </div>
@@ -190,6 +194,7 @@
     <!-- 引入 SDK -->
     <script src="./HikOpenVideoSDK-1.0.0.min.js"></script>
     <script src="./vue.min.js"></script>
+    <script src="./axios.min.js"></script>
     <!-- 引入 Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
@@ -200,263 +205,29 @@
             data() {
                 return {
                     wsClient: null,
-                    appAccessToken: '',
-                    userAccessToken: '',
-                    deviceSerial: '',
-                    resourcesData: {
-                        "msg": "处理成功",
-                        "code": 0,
-                        "data": {
-                            "deviceZoneId": 5004256,
-                            "thirdDescription": "4G球机",
-                            "hasDeviceAuth": false,
-                            "idString": "54672401",
-                            "source": 1,
-                            "secDescription": "球机",
-                            "firstCategoryName": "firstFrontDevice",
-                            "resName": "视频点",
-                            "isInactiveDevice": false,
-                            "logicNo": 1,
-                            "model": "DS-2DE4423DW-D/GLT/XM",
-                            "id": 54672401,
-                            "ext": "{\"goodsModel\": \"DS-2DE4423DW-D/GLT/XM\", \"videoLevel\": 2}",
-                            "resType": "Channel",
-                            "isCollect": false,
-                            "channelNum": 1,
-                            "lastestOfflineTime": "2025-07-23 14:44:50",
-                            "isSelect": false,
-                            "deviceVersion": "V5.8.2 build 241217",
-                            "thirdCategoryName": "third4GDomeCamera",
-                            "resIdentifier": 1,
-                            "isLongLife": false,
-                            "lowPower": 0,
-                            "gwDeviceSerial": "GA5538155",
-                            "deviceSerial": "GA5538155",
-                            "gwDeviceId": 54671964,
-                            "firstDescription": "前端设备",
-                            "videoLevel": 2,
-                            "secCategoryName": "secDomeCamera",
-                            "is4GDevice": 1,
-                            "name": "DS-2DE4423DW-D/GLT/XM(GA5538155)",
-                            "isShare": false,
-                            "isMultiDoor": false,
-                            "detailPage": "IPC",
-                            "multiList": [],
-                            "categoryId": 9010200,
-                            "isEncrypt": 0,
-                            "status": 1
-                        }
-                    },
-                    tokensData: {
-                        "msg": "操作成功！",
-                        "code": 0,
-                        "data": [
-                            {
-                                "streamTalkToken": "tk.AgMxLjABMQAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
-                                "streamTalk0Token": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
-                                "deviceSerial": "GA5538155",
-                                "streamTokenPlayExpire": 1753271687,
-                                "deviceVideoToken": "tk.BARERTAxCUdBNTUzODE1NQExBXZpZGVvASoAAAP0gGiAyNcAAAAAAAAAACxmdW9BUDBOZmRnWk9OWkFYa21hdi8rODcvYVBGQjVUWlF1OTlmR1h4SmZJPR4QMGiAjU-NQiOed6-UqHQXHQMvKiokAAA_",
-                                "channelNo": 1,
-                                "deviceGlobalToken": "tk.BARERTAxCUdBNTUzODE1NQExBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsQ1BTVjdSdGp1NGhzWTV3cWkyRXlBUFczK2I3d1RTVzA4NTg0S05Oc1BURT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA",
-                                "streamLiveToken": "tk.AgMxLjABMQAAAASwAAAEsGiAyNcAAAAAAAAAAAAAACxuS0EycnlyNnlWZ0ExWFczNkN0MG9KaGlxV1dia0JxRFBnT3JOd0dsS2ZBPTBogI1PzUIjnnev1Kh0Fx0A",
-                                "tokenExpire": 1753529687,
-                                "streamTokenExpire": 1753271687,
-                                "streamRecToken": "tk.AgMxLjABMQAAA-SAAAP0gGiAyNcAAQAAAAAAAAAAACx4bkU5WGloNDJvRzBiV1lLcVBkaGFKbjc5NDRaYkJoOFFSTU1HK2xwZTZVPTBogI1PzUIjnnev1Kh0Fx0A",
-                                "deviceToken": "tk.BARERTAxCUdBNTUzODE1NQEqBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsRmRzQXpHbjFrOE9yanJvUGt4Nm05d2lEck1kT2pDNWVudlFwaDZRbEQ3VT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA"
-                            },
-                            {
-                                "streamTalkToken": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
-                                "streamTalk0Token": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAgAAAAAAAAAAACxOYm5Pblh5MlJId05Ld3hnejB2U1hYSWNIWC9VOTM5UW5YQXVSam4rT1AwPTBogI1PzUIjnnev1Kh0Fx0A",
-                                "deviceSerial": "GA5538155",
-                                "streamTokenPlayExpire": 1753271687,
-                                "deviceVideoToken": "tk.BARERTAxCUdBNTUzODE1NQEwBXZpZGVvASoAAAP0gGiAyNcAAAAAAAAAACxkMjdtdy9SNHFENHUzbVAva2xtVkdpNzJzU1J0L0JXd3h2NG5YQ0NxS0RvPR4QMGiAjU-NQiOed6-UqHQXHQMvKiokAAA_",
-                                "channelNo": 0,
-                                "deviceGlobalToken": "tk.BARERTAxCUdBNTUzODE1NQEwBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAselg3cVlzVmdrdURkbjY5SUd1Z2lqSE56aTZsRWxrZ3oxTjZBUVlJS0xNRT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA",
-                                "streamLiveToken": "tk.AgMxLjABMAAAAASwAAAEsGiAyNcAAAAAAAAAAAAAACxuS0EycnlyNnlWZ0ExWFczNkN0MG9KaGlxV1dia0JxRFBnT3JOd0dsS2ZBPTBogI1PzUIjnnev1Kh0Fx0A",
-                                "tokenExpire": 1753529687,
-                                "streamTokenExpire": 1753271687,
-                                "streamRecToken": "tk.AgMxLjABMAAAA-SAAAP0gGiAyNcAAQAAAAAAAAAAACx4bkU5WGloNDJvRzBiV1lLcVBkaGFKbjc5NDRaYkJoOFFSTU1HK2xwZTZVPTBogI1PzUIjnnev1Kh0Fx0A",
-                                "deviceToken": "tk.BARERTAxCUdBNTUzODE1NQEqBmdsb2JhbAEqAAAD9IBogMjXAAAAAAAAAAAsRmRzQXpHbjFrOE9yanJvUGt4Nm05d2lEck1kT2pDNWVudlFwaDZRbEQ3VT0eEDBogI1PzUIjnnev1Kh0Fx0DLyoqJAAA"
-                            }
-                        ]
-                    }
-                    ,
-                    capacitysData: {
-                        "msg": "处理成功",
-                        "code": 0,
-                        "data": {
-                            "maxPatrolNum": 8,
-                            "supportDeviceVersion": 1,
-                            "supportQuickplayMaxtime": 8,
-                            "supportNvrOverlayDT": 1,
-                            "supportSupplementLight": 1,
-                            "maxPatrolSequenceNum": 32,
-                            "maxPatternNum": 4,
-                            "supportMotionDetect": 1,
-                            "supportMdDtcTarget": 1,
-                            "supportRecordPage": 1,
-                            "supportVideoQuality": 1,
-                            "supportFieldDetectArea": 1,
-                            "supportOneKeyCruise": 1,
-                            "supportOverlayName": 1,
-                            "source": "direct",
-                            "supportFieldDetect": 1,
-                            "supportIntranet": 1,
-                            "supportPtzPreset": 1,
-                            "supportMdBeep": 0,
-                            "matchSeriesId": 16,
-                            "channelShortcut": "ipcChannelShortcut",
-                            "supportWirelessDial": 1,
-                            "supportEncrypt": 1,
-                            "logUploadType": [],
-                            "supportIsapi": 1,
-                            "supportWhiteLightBrightness": 1,
-                            "supportWdr": 1,
-                            "supportUpgradePackageTask": 1,
-                            "minPatrolSequenceDelay": 15,
-                            "supportPtzLeftRight": 1,
-                            "supportRegionEntrance": 1,
-                            "supportGL": 1,
-                            "supportPosition3D": 1,
-                            "seriesName": "4G球机,*DS-2DC*/GLT*,*DS-2DE*/GL*",
-                            "temp59A": 1,
-                            "supportLightSwitch": 1,
-                            "supportRecord": 1,
-                            "cloudStorage": {
-                                "stateDesc": "",
-                                "name": "云存储",
-                                "state": -2,
-                                "entrance": ""
-                            },
-                            "supportAlarmMessageDetection": 1,
-                            "supportLowPower": 0,
-                            "supportHuman": 1,
-                            "linkProPhysicalVersion": "V3.0.0",
-                            "supportDownload": 1,
-                            "supportDSTP": 1,
-                            "onceCruiseId": 45,
-                            "supportCapture": 1,
-                            "supportIntranetV2": 1,
-                            "supportLocalStorage": 1,
-                            "matchModelId": 39,
-                            "linkPhysicalVersion": "V3.2.4",
-                            "4gDevice": 1,
-                            "channelSettingPanel": "ipcChannelSetting",
-                            "supportSubscribeEvent": 1,
-                            "matchModel": ".*DS-2DE.*GL.*",
-                            "supportPhysicalAdd": 1,
-                            "supportPtzDirection": 1,
-                            "supportAlarmPic": 1,
-                            "supportLink": 1,
-                            "specialId": [
-                                33,
-                                34,
-                                35,
-                                36,
-                                37,
-                                38,
-                                39,
-                                40,
-                                41,
-                                42,
-                                43,
-                                44,
-                                45,
-                                46,
-                                50,
-                                94,
-                                96,
-                                97,
-                                98,
-                                99,
-                                100,
-                                101,
-                                102,
-                                103,
-                                104,
-                                105
-                            ],
-                            "supportPtz": 1,
-                            "supportLED": 1,
-                            "supportUpgrade": 1,
-                            "supportVideoBack": 1,
-                            "support4GDevice": 1,
-                            "smartMessage": {
-                                "route": "SMUniAppPage://pages/statistics/channelDetail?appId=__UNI__EFB25DA",
-                                "stateDesc": "未开通",
-                                "name": "智能提醒",
-                                "state": -1,
-                                "entrance": "免费试用"
-                            },
-                            "mdSensitivityStep": 20,
-                            "supportPlayQuickOpt": "1,2,4,8",
-                            "featureModelIds": [],
-                            "supportDefenceplan": 1,
-                            "maxPatrolSequenceDelay": 3600,
-                            "supportStreamCodeV2": 1,
-                            "supportMotionDetectArea": 1,
-                            "supportVideoPicRatio": 1,
-                            "supportPlaySlowOpt": "0.125,0.25,0.5",
-                            "supportRecordPlan": 1,
-                            "supportOverlayDT": 1,
-                            "supportIrLightBrightness": 1,
-                            "supportLineDetection": 1,
-                            "supportSupplementLightClose": 1,
-                            "supportVideoQualityOpt": [
-                                {
-                                    "streamType": 0,
-                                    "videoLevel": 1,
-                                    "videoLevelDesc": "标清"
-                                },
-                                {
-                                    "streamType": 0,
-                                    "videoLevel": 2,
-                                    "videoLevelDesc": "高清"
-                                },
-                                {
-                                    "streamType": 0,
-                                    "videoLevel": 3,
-                                    "videoLevelDesc": "超清"
-                                }
-                            ],
-                            "supportPtzCtrl": 1,
-                            "supportCar": 1,
-                            "supportNvrOverlayName": 1,
-                            "supportPtzZoom": 1,
-                            "supportHdd": 1,
-                            "defaultPatrolSequenceDelay": 15,
-                            "supportDefence": 1,
-                            "supportReplaySpeed": 1,
-                            "deviceSettingPanel": "ipcDeviceSetting",
-                            "supportRegionExiting": 1,
-                            "supportVideoBackDetection": 1,
-                            "supportFlip": 1,
-                            "supportSmartMessage": 1,
-                            "supportPtzTopBottom": 1,
-                            "supportPhysicalModel": 1,
-                            "supportSmartHumanCar": 1
-                        }
-                    },
-                    ezAccessData: {
-                        "msg": "操作成功！",
-                        "code": 0,
-                        "data": {
-                            "tokenAppKey": "3068808d4fcd42239e77afd4a874171d",
-                            "tokenExpire": 1753529568,
-                            "httpUrlToken": "tk.AwRTSTAyAAADLyoqAAP0gGiAyGAsS0xvazhaNXRDd2RVcjZnTGNnZjN6VC9SYTlyeXNxQVE0K1BSZWcyQW5tcz0eEDBogI1PzUIjnnev1Kh0Fx0kAAAAAAAAAAAA"
-                        }
-                    },
-
+                    appAccessToken: 'at-A4D-9ZFcXaKgml2FJ1i1FG7d-D5Bw1DAearZOG2I',
+                    userAccessToken: 'ut-7c2e3cd7-53fc-4c61-884b-80f2b7c6f108',
+                    deviceSerial: 'GA5538155',
+                    isAuto: false,
+                    resourcesData: '',
+                    tokensData: '',
+                    capacitysData: '',
+                    ezAccessData: '',
+                    channelNo: 1,
+                    // JKAxios: axios.create()
                 }
             },
             mounted: function () {
                 this.appAccessToken = this.getURLParams('appAccessToken');
                 this.userAccessToken = this.getURLParams('userAccessToken');
                 this.deviceSerial = this.getURLParams('deviceSerial');
-                this.initWebSocketClient();
-
-
+                this.getTokenOPs()
+                this.getDevSource()
+                this.getDevToken()
+                this.getDeviceCapacities()
+                setTimeout(() => {
+                    this.initWebSocketClient();
+                }, 1000)
             },
             created() {
 
@@ -474,6 +245,65 @@
 
             },
             methods: {
+                // 获取设备萤石云token
+                getTokenOPs() {
+                    let baserurl = 'https://open-api.hikiot.com/device/v1/token/ops/get'
+                    window.axios.get(baserurl, {
+                        headers: {
+                            "App-Access-Token": this.appAccessToken,
+                            "User-Access-Token": this.userAccessToken
+                        }
+                    },).then(res => {
+                        this.ezAccessData = JSON.stringify(res)
+                        // resolve(res.data);
+
+                    })
+
+                },
+                //获取资源详情
+                getDevSource() {
+                    let baserurl = `https://open-api.hikiot.com/device/desk/pc/resource/v1/getById?deviceSerial=${this.deviceSerial}&channelNo=${this.channelNo}`
+                    window.axios.get(baserurl, {
+                        headers: {
+                            "App-Access-Token": this.appAccessToken,
+                            "User-Access-Token": this.userAccessToken
+                        }
+                    },).then(res => {
+                        this.resourcesData = JSON.stringify(res)
+                    })
+                },
+
+                //批量获取设备token
+                getDevToken() {
+                    let baserurl = 'https://open-api.hikiot.com/device/v1/token/device/batch'
+                    window.axios.post(baserurl, [
+                        {
+                            deviceSerial: this.deviceSerial,
+                            channelNo: this.channelNo
+                        }
+                    ], {
+                        headers: {
+                            "App-Access-Token": this.appAccessToken,
+                            "User-Access-Token": this.userAccessToken
+                        }
+                    },).then(res => {
+                        this.tokensData = JSON.stringify(res)
+
+                    })
+                },
+                //设备/通道能力查询
+                getDeviceCapacities() {
+                    let baserurl = `https://open-api.hikiot.com/device/v1/getDeviceCapacities?deviceSerial=${this.deviceSerial}`
+                    window.axios.get(baserurl, {
+                        headers: {
+                            "App-Access-Token": this.appAccessToken,
+                            "User-Access-Token": this.userAccessToken
+                        }
+                    },).then(res => {
+                        this.capacitysData = JSON.stringify(res)
+                    })
+                },
+
                 // 获取 URL 参数
                 getURLParams() {
                     const search = window.location.search || window.location.hash.split('?')[1] || '';
@@ -482,9 +312,10 @@
                 initWebSocketClient() {
                     if (window.WebSocketClient) {
                         this.wsClient = new window.WebSocketClient();
-                        try {
-                            const response = this.wsClient.connect();
-                            if (response.code === 0) {
+                        console.log('this.wsClient', this.wsClient)
+                        // try {
+                        this.wsClient.connect().then((response) => {
+                            if (response.code == 0) {
                                 console.log('WebSocket连接成功');
 
                                 const appkeydata = {
@@ -492,9 +323,12 @@
                                     openAppkey: '1947464820169441335',
                                     openAppSecret: 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAOak5iLuyMzfNLDliTFtsIi4iorcX0oc6rPfaaf0EFuO7schjsUepL5YJz4saJU3kXOrn2rQoFtgD/9+2kvuisne2gUs/CFndfDAieMBlBdHzR62zi6lKAerWdFKAOWlYLwulY6O/MyqxzrQOFnZAJ1vWXfvQkM4w9FsPiaANEzdAgMBAAECgYAZtkRZnJkSDcgH+G7E7d+CPmBjfpG452RazQswSAsSyepglKMf4nynI5isW7ME/37dkEJjXAKkbR8bcn7PfDZIeKme0i2C4F9wV4ghtmhFS93Hn63do/KH3DH2h8TIjTWyb+vXCo8WCoLv+F8NdSe9CZLFHuLMT4XY3IaOSFOogQJBAP/UDslU20YyG4dk5WP0mvPAYOek16OLLuz8UMVlcS0gBpnL7AR+JFMIsQwSNKBFtsuub4jLxSuvqk8mwMwrHi0CQQDmzIP06pVS3sDdvo+ka9j37YD/0IDHuJrWjH/3fczXD7x2XQxYzdOGl9ZjH5Bdnrjmz5cGG0b1GyWy8QkY88dxAkB4JuR68nu50DbVtDF4bJ2J9cSNhwIwMWJss2RMEYTCKNRwzzGeOpBc3ywn+zT0QUnFB7wih3GnPu3CFvVd7rJRAkBq6RW/H+MnzhOdJCa5zVNmFViKJ3VgDr164P5uEJIQlTOByLxtbnqrgC5JIFfpZhrUoBifNYd7BqZB67GBI3uhAkEAoyOxi4kqcyTAzmsY7K/2ZpYs8MqAeLhm0YcraiGipReVJZIAYlFSL3TSw3kMx6c+vP1Qi4jrVA+UnU63u1IBCg=='
                                 };
+                                console.log('22')
                                 this.wsClient.setSecretConfigInfo(appkeydata, (response) => {
                                     console.log('initWndParam回调');
                                 });
+                                console.log('33')
+
 
 
                                 // 获取视频容器大小
@@ -502,9 +336,9 @@
 
                                 // 初始化窗口参数
                                 const data = {
-                                    ezAccessData: JSON.stringify(this.ezAccessData),
+                                    ezAccessData: this.ezAccessData,
                                     appAccessToken: this.appAccessToken,
-                                    userAccessToken: userAccessToken,
+                                    userAccessToken: this.userAccessToken,
                                     ezvizAddr: 'https://open.ys7.com',
                                     authAddr: 'https://auth.ys7.com',
                                     openAddr: 'https://open.ys7.com'
@@ -527,6 +361,9 @@
                                             }
                                         }, (res) => {
                                             console.log(res, '设置窗口位置回调');
+                                            setTimeout(() => {
+                                                this.initResource()
+                                            }, 200)
                                         });
                                     });
                                 });
@@ -543,25 +380,26 @@
                                         }
                                     }, (response) => {
                                         console.log(response, '设置窗口位置回调');
+
+
                                     });
                                 });
 
-                                setTimeout(() => {
-                                    this.initResource()
-                                }, 3000)
+
                             }
-                        } catch (err) {
-                            console.error('WebSocket连接失败:', err);
-                        }
+                        })
+                        // } catch (err) {
+                        //     console.error('WebSocket连接失败:', err);
+                        // }
                     } else {
                         console.error('WebSocketClient未定义，请检查SDK加载');
                     }
                 },
                 initResource() {
                     const initResourcedata = {
-                        resourcesData: JSON.stringify(this.resourcesData),
-                        tokensData: JSON.stringify(this.tokensData),
-                        capacitysData: JSON.stringify(this.capacitysData)
+                        resourcesData: this.resourcesData,
+                        tokensData: this.tokensData,
+                        capacitysData: this.capacitysData
                     };
 
                     // 模拟调用接口
@@ -604,6 +442,23 @@
                             console.log(res, '控制');
                         });
                     }, 500);
+                },
+                cloudControlAuto(direction) {
+                    if (direction != 16) {
+                        return;
+                    }
+                    this.isAuto = !this.isAuto;
+                    let data = {
+                        cmdType: this.isAuto ? 'start' : 'stop',
+                        deviceSerial: this.deviceSerial,
+                        channelNo: 1,
+                        direction: Number(direction),
+                    }
+                    if (this.isAuto) {
+                        data.speed = 1;
+                    }
+                    this.wsClient.ptzControl(1, data, () => {
+                    });
                 }
 
             }
