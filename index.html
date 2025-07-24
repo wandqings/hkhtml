@@ -322,62 +322,68 @@
                 initWebSocketClient() {
                     if (window.WebSocketClient) {
                         this.wsClient = new window.WebSocketClient();
-                        // console.log('this.wsClient', this.wsClient)
-                        // try {
-                        // 初始化插件参数前调用，可多次调用
-                        const appkeydata = {
-                            bSecret: false,
-                            openAppkey: '1947464820169441335',
-                            openAppSecret: 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAOak5iLuyMzfNLDliTFtsIi4iorcX0oc6rPfaaf0EFuO7schjsUepL5YJz4saJU3kXOrn2rQoFtgD/9+2kvuisne2gUs/CFndfDAieMBlBdHzR62zi6lKAerWdFKAOWlYLwulY6O/MyqxzrQOFnZAJ1vWXfvQkM4w9FsPiaANEzdAgMBAAECgYAZtkRZnJkSDcgH+G7E7d+CPmBjfpG452RazQswSAsSyepglKMf4nynI5isW7ME/37dkEJjXAKkbR8bcn7PfDZIeKme0i2C4F9wV4ghtmhFS93Hn63do/KH3DH2h8TIjTWyb+vXCo8WCoLv+F8NdSe9CZLFHuLMT4XY3IaOSFOogQJBAP/UDslU20YyG4dk5WP0mvPAYOek16OLLuz8UMVlcS0gBpnL7AR+JFMIsQwSNKBFtsuub4jLxSuvqk8mwMwrHi0CQQDmzIP06pVS3sDdvo+ka9j37YD/0IDHuJrWjH/3fczXD7x2XQxYzdOGl9ZjH5Bdnrjmz5cGG0b1GyWy8QkY88dxAkB4JuR68nu50DbVtDF4bJ2J9cSNhwIwMWJss2RMEYTCKNRwzzGeOpBc3ywn+zT0QUnFB7wih3GnPu3CFvVd7rJRAkBq6RW/H+MnzhOdJCa5zVNmFViKJ3VgDr164P5uEJIQlTOByLxtbnqrgC5JIFfpZhrUoBifNYd7BqZB67GBI3uhAkEAoyOxi4kqcyTAzmsY7K/2ZpYs8MqAeLhm0YcraiGipReVJZIAYlFSL3TSw3kMx6c+vP1Qi4jrVA+UnU63u1IBCg=='
-                        }
-                        // return new Promise((resolve) => {
-                        this.wsClient.setSecretConfigInfo(appkeydata, (response) => {
-                            console.log('setSecretConfigInfo回调', response);
-                            resolve();
-                        });
-                        // }).then(() => {
-                        // 获取视频容器大小
-                        const rect = document.getElementById('hkdomvideo').getBoundingClientRect();
-
-                        // 初始化窗口参数
-                        const data = {
-                            ezAccessData: this.ezAccessData,
-                            appAccessToken: this.appAccessToken,
-                            userAccessToken: this.userAccessToken,
-                            ezvizAddr: 'https://open.ys7.com',
-                            authAddr: 'https://auth.ys7.com',
-                            openAddr: 'https://open.ys7.com'
-                        };
-
-                        // return new Promise((resolve) => {
-                        this.wsClient.initWndParam(data, (response) => {
-                            console.log(response, '初始化回调');
-                        });
-
-
-
-                        this.wsClient.setParentWnd({ webTitle: this.wsClient.guid(16) }, (res) => {
-                            console.log(res, '设置父窗口回调');
-
-                            this.wsClient.setWndGeometry({
-                                rect: {
-                                    top: 0,
-                                    left: 0,
-                                    width: 375,
-                                    height: 220
+                        console.log('this.wsClient', this.wsClient)
+                        this.wsClient.connect().then((response) => {
+                            console.log('连接成功', response);
+                            if (response.code == 0) {
+                                // 初始化插件参数前调用，可多次调用
+                                const appkeydata = {
+                                    bSecret: false,
+                                    openAppkey: '1947464820169441335',
+                                    openAppSecret: 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAOak5iLuyMzfNLDliTFtsIi4iorcX0oc6rPfaaf0EFuO7schjsUepL5YJz4saJU3kXOrn2rQoFtgD/9+2kvuisne2gUs/CFndfDAieMBlBdHzR62zi6lKAerWdFKAOWlYLwulY6O/MyqxzrQOFnZAJ1vWXfvQkM4w9FsPiaANEzdAgMBAAECgYAZtkRZnJkSDcgH+G7E7d+CPmBjfpG452RazQswSAsSyepglKMf4nynI5isW7ME/37dkEJjXAKkbR8bcn7PfDZIeKme0i2C4F9wV4ghtmhFS93Hn63do/KH3DH2h8TIjTWyb+vXCo8WCoLv+F8NdSe9CZLFHuLMT4XY3IaOSFOogQJBAP/UDslU20YyG4dk5WP0mvPAYOek16OLLuz8UMVlcS0gBpnL7AR+JFMIsQwSNKBFtsuub4jLxSuvqk8mwMwrHi0CQQDmzIP06pVS3sDdvo+ka9j37YD/0IDHuJrWjH/3fczXD7x2XQxYzdOGl9ZjH5Bdnrjmz5cGG0b1GyWy8QkY88dxAkB4JuR68nu50DbVtDF4bJ2J9cSNhwIwMWJss2RMEYTCKNRwzzGeOpBc3ywn+zT0QUnFB7wih3GnPu3CFvVd7rJRAkBq6RW/H+MnzhOdJCa5zVNmFViKJ3VgDr164P5uEJIQlTOByLxtbnqrgC5JIFfpZhrUoBifNYd7BqZB67GBI3uhAkEAoyOxi4kqcyTAzmsY7K/2ZpYs8MqAeLhm0YcraiGipReVJZIAYlFSL3TSw3kMx6c+vP1Qi4jrVA+UnU63u1IBCg=='
                                 }
-                            }, (res) => {
-                                console.log(res, '设置窗口位置回调');
-                                this.wsClient.showWnd({}, (response) => {
-                                    console.log(response, '窗口显示回调');
-                                    setTimeout(() => {
-                                        this.initResource();
-                                    }, 200);
+                                // return new Promise((resolve) => {
+                                this.wsClient.setSecretConfigInfo(appkeydata, (response) => {
+                                    console.log('setSecretConfigInfo回调', response);
+                                    resolve();
+                                });
+                                // }).then(() => {
+                                // 获取视频容器大小
+                                const rect = document.getElementById('hkdomvideo').getBoundingClientRect();
 
+                                // 初始化窗口参数
+                                const data = {
+                                    ezAccessData: this.ezAccessData,
+                                    appAccessToken: this.appAccessToken,
+                                    userAccessToken: this.userAccessToken,
+                                    ezvizAddr: 'https://open.ys7.com',
+                                    authAddr: 'https://auth.ys7.com',
+                                    openAddr: 'https://open.ys7.com'
+                                };
+
+                                // return new Promise((resolve) => {
+                                this.wsClient.initWndParam(data, (response) => {
+                                    console.log(response, '初始化回调');
+                                    this.wsClient.showWnd({}, (response) => {
+                                        console.log(response, '窗口显示回调')
+                                    });
                                 });
 
-                            });
-                        });
+
+                                this.wsClient.setParentWnd({ webTitle: this.wsClient.guid(16) }, (res) => {
+                                    console.log(res, '设置父窗口回调');
+
+                                    this.wsClient.setWndGeometry({
+                                        rect: {
+                                            top: 0,
+                                            left: 0,
+                                            width: 375,
+                                            height: 220
+                                        }
+                                    }, (res) => {
+                                        console.log(res, '设置窗口位置回调');
+                                        console.log(response, '窗口显示回调');
+                                        setTimeout(() => {
+                                            this.initResource();
+                                        }, 200);
+
+
+                                    });
+                                });
+                            }
+                        })
+                        // try {
+
 
 
                     } else {
