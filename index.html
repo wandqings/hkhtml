@@ -193,8 +193,7 @@
 
     <!-- 引入 SDK -->
     <script src="./HikOpenVideoSDK-1.0.0.min.js"></script>
-<!--     <script src="./vue.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+    <script src="./vue.min.js"></script>
     <script src="./axios.min.js"></script>
     <!-- 引入 Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -206,9 +205,9 @@
             data() {
                 return {
                     wsClient: null,
-                    appAccessToken: '',
-                    userAccessToken: '',
-                    deviceSerial: '',
+                    appAccessToken: 'at-A4D-9ZFcXaKgml2FJ1i1FG7d-D5Bw1DAearZOG2I',
+                    userAccessToken: 'ut-7c2e3cd7-53fc-4c61-884b-80f2b7c6f108',
+                    deviceSerial: 'GA5538155',
                     isAuto: false,
                     resourcesData: '',
                     tokensData: '',
@@ -222,7 +221,7 @@
                 this.appAccessToken = this.getURLParams('appAccessToken');
                 this.userAccessToken = this.getURLParams('userAccessToken');
                 this.deviceSerial = this.getURLParams('deviceSerial');
-                console.log(this.appAccessToken,this.userAccessToken ,this.deviceSerial )
+                console.log(this.appAccessToken, this.userAccessToken, this.deviceSerial);
                 // 使用Promise.all确保所有数据获取完成后再初始化WebSocket
                 Promise.all([
                     this.getTokenOPs(),
@@ -264,7 +263,6 @@
                         }
                     },).then(res => {
                         this.ezAccessData = JSON.stringify(res)
-                        // resolve(res.data);
 
                     })
 
@@ -315,78 +313,73 @@
 
                 // 获取 URL 参数
                 getURLParams(name) {
-                    const search = window.location.search || window.location.hash.split('?')[1] || '';
+                    const search = window.location.search || (window.location.hash.split('?')[1] || '');
                     const params = new URLSearchParams(search);
-                    return params.get(name);
+                    const value = params.get(name);
+
+                    return value;
                 },
                 initWebSocketClient() {
                     if (window.WebSocketClient) {
                         this.wsClient = new window.WebSocketClient();
                         // console.log('this.wsClient', this.wsClient)
                         // try {
-                         const appkeydata = {
+                        // 初始化插件参数前调用，可多次调用
+                        const appkeydata = {
                             bSecret: false,
                             openAppkey: '1947464820169441335',
                             openAppSecret: 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAOak5iLuyMzfNLDliTFtsIi4iorcX0oc6rPfaaf0EFuO7schjsUepL5YJz4saJU3kXOrn2rQoFtgD/9+2kvuisne2gUs/CFndfDAieMBlBdHzR62zi6lKAerWdFKAOWlYLwulY6O/MyqxzrQOFnZAJ1vWXfvQkM4w9FsPiaANEzdAgMBAAECgYAZtkRZnJkSDcgH+G7E7d+CPmBjfpG452RazQswSAsSyepglKMf4nynI5isW7ME/37dkEJjXAKkbR8bcn7PfDZIeKme0i2C4F9wV4ghtmhFS93Hn63do/KH3DH2h8TIjTWyb+vXCo8WCoLv+F8NdSe9CZLFHuLMT4XY3IaOSFOogQJBAP/UDslU20YyG4dk5WP0mvPAYOek16OLLuz8UMVlcS0gBpnL7AR+JFMIsQwSNKBFtsuub4jLxSuvqk8mwMwrHi0CQQDmzIP06pVS3sDdvo+ka9j37YD/0IDHuJrWjH/3fczXD7x2XQxYzdOGl9ZjH5Bdnrjmz5cGG0b1GyWy8QkY88dxAkB4JuR68nu50DbVtDF4bJ2J9cSNhwIwMWJss2RMEYTCKNRwzzGeOpBc3ywn+zT0QUnFB7wih3GnPu3CFvVd7rJRAkBq6RW/H+MnzhOdJCa5zVNmFViKJ3VgDr164P5uEJIQlTOByLxtbnqrgC5JIFfpZhrUoBifNYd7BqZB67GBI3uhAkEAoyOxi4kqcyTAzmsY7K/2ZpYs8MqAeLhm0YcraiGipReVJZIAYlFSL3TSw3kMx6c+vP1Qi4jrVA+UnU63u1IBCg=='
                         }
-                        return new Promise((resolve) => {
-                            this.wsClient.setSecretConfigInfo(appkeydata, (response) => {
-                                console.log('setSecretConfigInfo回调', response);
-                                resolve();
-                            });
-                        }).then(() => {
-                            // 获取视频容器大小
-                            const rect = document.getElementById('hkdomvideo').getBoundingClientRect();
+                        // return new Promise((resolve) => {
+                        this.wsClient.setSecretConfigInfo(appkeydata, (response) => {
+                            console.log('setSecretConfigInfo回调', response);
+                            resolve();
+                        });
+                        // }).then(() => {
+                        // 获取视频容器大小
+                        const rect = document.getElementById('hkdomvideo').getBoundingClientRect();
 
-                            // 初始化窗口参数
-                            const data = {
-                                ezAccessData: this.ezAccessData,
-                                appAccessToken: this.appAccessToken,
-                                userAccessToken: this.userAccessToken,
-                                ezvizAddr: 'https://open.ys7.com',
-                                authAddr: 'https://auth.ys7.com',
-                                openAddr: 'https://open.ys7.com'
-                            };
+                        // 初始化窗口参数
+                        const data = {
+                            ezAccessData: this.ezAccessData,
+                            appAccessToken: this.appAccessToken,
+                            userAccessToken: this.userAccessToken,
+                            ezvizAddr: 'https://open.ys7.com',
+                            authAddr: 'https://auth.ys7.com',
+                            openAddr: 'https://open.ys7.com'
+                        };
 
-                            return new Promise((resolve) => {
-                                this.wsClient.initWndParam(data, (response) => {
-                                    console.log(response, '初始化回调');
-                                    resolve();
-                                });
-                            });
-                        }).then(() => {
-                            return new Promise((resolve) => {
+                        // return new Promise((resolve) => {
+                        this.wsClient.initWndParam(data, (response) => {
+                            console.log(response, '初始化回调');
+                        });
+
+
+
+                        this.wsClient.setParentWnd({ webTitle: this.wsClient.guid(16) }, (res) => {
+                            console.log(res, '设置父窗口回调');
+
+                            this.wsClient.setWndGeometry({
+                                rect: {
+                                    top: 0,
+                                    left: 0,
+                                    width: 375,
+                                    height: 220
+                                }
+                            }, (res) => {
+                                console.log(res, '设置窗口位置回调');
                                 this.wsClient.showWnd({}, (response) => {
                                     console.log(response, '窗口显示回调');
-                                    resolve();
+                                    setTimeout(() => {
+                                        this.initResource();
+                                    }, 200);
+
                                 });
+
                             });
-                        }).then(() => {
-                            return new Promise((resolve) => {
-                                this.wsClient.setParentWnd({ webTitle: this.wsClient.guid(16) }, (res) => {
-                                    console.log(res, '设置父窗口回调');
-                                    resolve();
-                                });
-                            });
-                        }).then(() => {
-                            return new Promise((resolve) => {
-                                this.wsClient.setWndGeometry({
-                                    rect: {
-                                        top: 0,
-                                        left: 0,
-                                        width: 375,
-                                        height: 220
-                                    }
-                                }, (res) => {
-                                    console.log(res, '设置窗口位置回调');
-                                    resolve();
-                                });
-                            });
-                        }).then(() => {
-                            setTimeout(() => {
-                                this.initResource();
-                            }, 200);
                         });
+
+
                     } else {
                         console.error('WebSocketClient未定义，请检查SDK加载');
                     }
