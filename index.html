@@ -205,9 +205,9 @@
             data() {
                 return {
                     wsClient: null,
-                    appAccessToken: 'at-A4D-9ZFcXaKgml2FJ1i1FG7d-D5Bw1DAearZOG2I',
-                    userAccessToken: 'ut-7c2e3cd7-53fc-4c61-884b-80f2b7c6f108',
-                    deviceSerial: 'GA5538155',
+                    appAccessToken: '',
+                    userAccessToken: '',
+                    deviceSerial: '',
                     isAuto: false,
                     resourcesData: '',
                     tokensData: '',
@@ -221,6 +221,7 @@
                 this.appAccessToken = this.getURLParams('appAccessToken');
                 this.userAccessToken = this.getURLParams('userAccessToken');
                 this.deviceSerial = this.getURLParams('deviceSerial');
+                console.log(this.appAccessToken,this.userAccessToken ,this.deviceSerial )
                 // 使用Promise.all确保所有数据获取完成后再初始化WebSocket
                 Promise.all([
                     this.getTokenOPs(),
